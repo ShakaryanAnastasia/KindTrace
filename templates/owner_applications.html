@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Creation form {% endblock %}
+
+{% block content %}
+    <div class="feature">
+
+    {% if apps %}
+        {% for el in apps %}
+            <div class="alert alert-warning">
+
+            <a href="read/{{el.id}}" class="h3">{{ el.name }} {{ el.surname }}</a>
+            <p> {{ el.email }}</p>
+             <a href="applay/{{el.id}}" class="btn">Принять</a>
+             <a href="delete/{{el.id}}" class="btn">Отклонить</a>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No apps</p>
+    {% endif %}
+
+</div>
+{% endblock %}

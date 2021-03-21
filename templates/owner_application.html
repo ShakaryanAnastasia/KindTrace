@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Creation form {% endblock %}
+
+{% block content %}
+      {% include "includes/navbar.html" %}
+    <div class = "appl">
+    <div class="feature">
+        <h1>Заявка </h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <span>{{ error }} </span>
+
+            <button class="bpo" type="submit">Ввод</button>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}

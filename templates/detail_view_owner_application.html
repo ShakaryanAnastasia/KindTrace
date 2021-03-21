@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} {{ application.name }} {% endblock %}
+
+{% block content %}
+    <div class="feature">
+        <h1>{{ application.name }}</h1>
+        <h1>{{ application.surname }}</h1>
+        <p>{{ application.email }}</p>
+        <p>{{ application.phoneNum }}</p>
+        <p>{{ application.get_sex_display }}</p>
+        {% for f in files %}
+            <p> <a href="{{f.file}}" download>{{f.file.name}}</a></p>
+        {% endfor %}
+
+
+</div>
+{% endblock %}

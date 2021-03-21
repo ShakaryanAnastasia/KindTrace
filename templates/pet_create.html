@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Creation form {% endblock %}
+
+{% block content %}
+    <div class="addpetclass">
+        <h1>Add pet</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <span>{{ error }} </span>
+
+            <button class="btn" type="submit">Ввод</button>
+
+        </form>
+
+
+</div>
+{% endblock %}

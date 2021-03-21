@@ -1,0 +1,156 @@
+@font-face {
+    font-family: 'Laptev_Brush';
+    src: url(../fonts/Laptev_Brush.otf )}
+
+body{
+    height: 130vh;
+    margin: auto;
+    width: 100%;
+    overflow-x: hidden;
+    font-family:'Laptev_Brush', sans-serif;
+    background: #ffffff;
+    /*background: -webkit-linear-gradient(to bottom, #efb47d, #ffeeda);*/
+    /*background: linear-gradient(to bottom, #ffe6b3, #db8d43);*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.form-control{
+     height: 40px;
+ background: #cdcdcd;
+ border: none;
+ border-radius: 20px;
+ box-shadow: none;
+ padding: 0 20px;
+ font-size: 20px;
+    width: 330px;
+ color: #343333;
+ transition: all 0.3s ease 0s;
+    opacity: 0.7;
+
+}
+
+.btn{
+     width: 200px;
+     background: #0a0909;
+     padding: 10px 20px;
+     border: none;
+     font-size: 14px;
+     font-weight: bold;
+     color: #7e7d7d;
+     border-radius: 20px;
+     text-transform: uppercase;
+     margin: 20px 0 30px 0;
+    font-family:'Laptev_Brush', sans-serif;
+    margin-right: 20px;
+    opacity: 0.7;
+}
+.alert{
+    float: left;
+    clear: both;
+    width: 400px;
+    margin: 20px 34%;
+    text-align: center;
+}
+
+.comm {
+    width: 400px;
+    height: 400px;
+}
+.nav-link{
+
+    color: #ffffff;
+}
+.nav-link:hover{
+    color: #b5b5b5;
+}
+.navbar {
+    position: fixed;
+	top: 0; left: 0;
+
+	transition: all .3s ease;
+
+    width: 1930px;
+    background: #0a0909;
+    font-size: 25px;
+    /*box-shadow: 5px 5px 5px rgb(235, 252, 251);*/
+     opacity: 0.7;
+
+
+
+}
+.navbar-brand {
+  font-size: 30px;}
+  .navbar div{
+
+  }
+.social a {
+  font-size: 4em;
+  padding: 20px;}
+.column {
+    padding-top: 50px;
+    float: left;
+    width: 50%;
+    padding-left: 100px;
+    padding-right: 150px;
+
+
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+
+
+}
+.pic{
+    box-shadow: 10px 10px 10px rgb(200, 195, 195);
+}
+
+.row{
+    margin-top: 50px;
+}
+
+.navbar-nav{
+    margin-right: 100px;
+
+}
+.nav-item{
+    margin-left: 20px;
+}
+
+.pow{
+    margin-top: 100px;
+
+}
+.bpo{
+    width: 200px;
+     background: #0a0909;
+     padding: 10px 20px;
+     border: none;
+     font-size: 14px;
+     font-weight: bold;
+     color: #ffffff;
+     border-radius: 20px;
+     text-transform: uppercase;
+     margin: 20px 0 30px 0;
+    font-family:'Laptev_Brush', sans-serif;
+    margin-right: 20px;
+    opacity: 0.7;
+}
+.reggi{
+    margin-top:100px;
+}
+
+.appl{
+    margin-top:100px;
+
+}
+.log{
+    margin-top:100px;
+    padding-right: 100px;
+}
