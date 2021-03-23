@@ -7,10 +7,13 @@
 {% include "includes/navbar.html" %}
 
 <div class = "pow">
-    <h1>Наши питомцы</h1>
+    <h1 class = "title">Наши питомцы</h1>
+
 
   {% for el in apps %}
-        <div class = "alert">
+
+        <div class = "column">
+        <div class = "style">
     <h2>
       <a href="{{ el.get_url }}">
        {{ el.name }}
@@ -18,16 +21,17 @@
     </h2>
     <p class="date">
       Возраст: {{ el.age}} год
-        <br>
+
 
     </p>
       <p class="date">
-      Пол: {{ el.sex}}
-        <br>
+      Пол: {{ el.get_sex_display}}
+
 
     </p>
-    {{ post.body|truncatewords:30|linebreaks }}
-      </div>
+        </div>
+        </div>
+
   {% endfor %}
 </div>
 

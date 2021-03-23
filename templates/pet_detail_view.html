@@ -3,46 +3,92 @@
 {% block title %} Creation form {% endblock %}
 
 {% block content %}
+    {% include "includes/navbar.html" %}
+    <div class="container">
+        <h1>{{ post.name }}</h1><br>
 
- <h1>{{ post.name }}</h1><br>
-  <p class="date">
-    {{ post.age }}<br>
-      {{ post.sex }}<br>
-      {{ post.type }}<br>
-      {{ post.color }}<br>
-      {{ post.character }}<br>
-      {{ post.description }}<br>
-      {{ post.shelter}}<br>
-      {{ post.owner }}<br>
-  </p>
-  {{ post.body|linebreaks }}<br>
-    {% with comments.count as total_comments %}
-  <h2>
-    {{ total_comments }} comment{{ total_comments|pluralize }}
-  </h2>
-{% endwith %}
-    {% for comment in comments %}
-  <div class="comment">
-    <p class="info">
-     {{ comment.title }}
-      {{ comment.dateCreate }} <br>
-        {{ comment.user}}
-    </p>
-  {{ comment.body|linebreaks }}
-  </div>
-{% empty %}
-  <p>There are no comments yet.</p>
-{% endfor %}
-    {% if new_comment %}
-  <h2>Your comment has been added.</h2>
-{% else %}
-  <h2>Add a new comment</h2>
-  <form action="." method="post">
-    {{ comment_form.as_p }}
-    {% csrf_token %}
-    <p><input type="submit" value="Add comment"></p>
-  </form>
-{% endif %}
+        <p class="date">
+            Возраст: {{ post.age }} год <br>
+            Пол: {{ post.get_sex_display }}<br>
+            Цвет: {{ post.get_color_display }}<br>
+            Характер: {{ post.get_character_display }}<br>
+            Описание: {{ post.description }}<br>
+            Приют: {{ post.shelter }}<br>
+        </p>
+        {{ post.body|linebreaks }}<br>
+        {% with comments.count as total_comments %}
+            <h2>
+                {{ total_comments }} комментариев
+            </h2>
+        {% endwith %}
+        {% for comment in comments %}
+            <div class="comment">
+                <p class="info">
+                    {{ comment.user }}<br>
+                    Тема: {{ comment.title }}
 
+
+                </p>
+
+                {{ comment.body|linebreaks }}
+                {{ comment.dateCreate }} <br>
+            </div>
+        {% empty %}
+            <p>Комментариев еще нет</p>
+        {% endfor %}
+        {% if new_comment %}
+            <h2>Ваш комментарий добавлен</h2>
+        {% else %}
+            <h2>Добавьте свой комментарий</h2>
+            <form action="." method="post">
+                {{ comment_form.title|as_crispy_field }}
+                <div class="form-comment">
+                    {{ comment_form.body|as_crispy_field }}
+                </div>
+                <br><br>
+                {% csrf_token %}
+                <p><input type="button" id="btn_add" class="btn" value="Добавить"></p>
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Авторизуйтесь в системе</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Для того, чтобы оставить комментарий, авторизуйтесь в системе</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('#btn_add').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '.',
+                    data: $('form').serialize(),
+                    success: function (data) {
+                        if (data.hasOwnProperty('id')) {
+                            document.location.reload(true);
+                        } else {
+                            $('#modal').modal('show');
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+            });
+        });
+
+    </script>
 {% endblock %}
 

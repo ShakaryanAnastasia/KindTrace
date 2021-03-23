@@ -41,3 +41,5 @@ class PersonUpdateView(UpdateView):
     model = Profile
     form_class = SignUpForm
     template_name = 'person_update_form.html'
+
+

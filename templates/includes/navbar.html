@@ -1,33 +1,40 @@
 {% block content %}
-    <nav  class="navbar navbar-expand-md ">
-  <div class="container-fluid">
+    <nav class="navbar navbar-expand-md ">
+        <div class="container-fluid">
 
-      <a href="#" class="navbar-brand">LoGO </a>
+            <a href="/" class="navbar-brand">LoGO </a>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" >
-      <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive" >
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-            <a href="#" class="nav-link"></a>
-            </li>
-            <li class="nav-item active">
-            <a href="/pets" class="nav-link">Питомцы</a>
-            </li>
-          <li class="nav-item">
-            <a href="/" class="nav-link">Новости </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Задачи</a>
-          </li>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a href="#" class="nav-link"></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="/pets" class="nav-link">Питомцы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Новости </a>
+                    </li>
+                {% if user.is_authenticated and user.profile.type == 'Volunteer'%}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Задачи</a>
+                    </li>
+                {% endif %}
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item">
 
-          <li class="nav-item">
-            <a href="/owner/application" class="nav-link">Стать хозяином приюта</a>
-          </li>
-          </ul>
+                            <a href="/owner/application" class="nav-link">Стать хозяином приюта</a>
 
-  </div>
-</div></nav>
+                        </li>
+                    {% endif %}
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
 
 {% endblock %}

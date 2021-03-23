@@ -72,7 +72,7 @@ body{
 
 	transition: all .3s ease;
 
-    width: 1930px;
+    width: 100%;
     background: #0a0909;
     font-size: 25px;
     /*box-shadow: 5px 5px 5px rgb(235, 252, 251);*/
@@ -89,11 +89,13 @@ body{
 .social a {
   font-size: 4em;
   padding: 20px;}
+
+
 .column {
     padding-top: 50px;
     float: left;
     width: 50%;
-    padding-left: 100px;
+    padding-left: 150px;
     padding-right: 150px;
 
 
@@ -153,4 +155,33 @@ body{
 .log{
     margin-top:100px;
     padding-right: 100px;
+}
+
+
+
+.pow{
+    padding-left: 350px;
+}
+
+.title{
+    padding-left: 450px;
+}
+
+.style{
+    background-color: #ffffff;
+}
+
+form.kom{
+    height: 100px;
+    display:inline;
+}
+
+.container{
+    margin-top:100px;
+    margin-left: 800px;
+}
+
+.form-comment{
+    height:100px;
+    width:330px;
 }

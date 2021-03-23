@@ -1,8 +1,10 @@
-from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect,  JsonResponse
 from django.shortcuts import render, redirect
 
+
 from Shelter.forms import CommentForm, PetForm
-from Shelter.models import Pet
+from Shelter.models import Pet, Profile
 
 
 def petapp(request):
@@ -16,12 +18,16 @@ def post_detail(request,id):
     new_comment = None
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.pet = post
-            new_comment.save()
-            return HttpResponseRedirect(f"/{id}")
-
+        if request.user.is_authenticated:
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                new_comment.user = Profile.objects.get(user=request.user)
+                new_comment.pet = post
+                new_comment.save()
+               # return HttpResponseRedirect(f"/{id}")
+                return JsonResponse({'id':id})
+        else:
+            return JsonResponse({})
     else:
         comment_form = CommentForm()
         return render(request,

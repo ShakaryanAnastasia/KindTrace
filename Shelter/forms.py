@@ -48,4 +48,9 @@ class PetForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        fields = ['title', 'body','user']
+        fields = ['title', 'body']
+
+        widgets = {
+            'body': forms.Textarea(attrs={'class': 'form-comment' }),
+
+        }

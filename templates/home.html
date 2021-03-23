@@ -50,8 +50,10 @@
 </p>
   </div>
 </div>
+    {% if not user.is_authenticated %}
  <form>
     <button href="" type="submit" class="btn "><a href="login/" class="nav-link">Авторизоваться</a></button>
      <button href="signup/" type="submit" class="btn "><a href="signup/" class="nav-link">Зарегистрироваться</a></button>
  </form>
+    {% endif %}
 {% endblock %}
