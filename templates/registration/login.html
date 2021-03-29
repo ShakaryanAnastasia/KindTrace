@@ -4,18 +4,22 @@
 
 {% block content %}
 
-{% include "includes/navbar.html" %}
-<div class = "log">
-<h1> Авторизоваться </h1>
-<form method="post">
+    {% include "includes/navbar.html" %}
+    <div class="log">
+        <h1> Авторизоваться </h1>
+        <form method="post">
 
-       <hr class="mt-0 mb-4">
-{% csrf_token %}
-<input type="hidden" name="next" value="{{ next }}">
+            <hr class="mt-0 mb-4">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
 
-{{ form|crispy }}
+            {{ form|crispy }}
 
-<button type="submit" class="bpo ">Войти</button>
-</form>
-</div>
+            <button type="submit" class="bpo ">Войти</button>
+        </form>
+        <form>
+            <button href="signup/" type="submit" class="btn "><a href="signup/" class="nav-link">Зарегистрироваться</a>
+            </button>
+        </form>
+    </div>
 {% endblock %}

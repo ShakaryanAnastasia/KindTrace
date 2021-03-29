@@ -50,7 +50,6 @@ class Profile(models.Model):
         MODERATOR = 'Moderator'
         CLIENT = 'Client'
         OWNER = 'Owner'
-        VOLUNTEER = 'Volunteer'
 
     type = models.CharField(
         max_length=9,

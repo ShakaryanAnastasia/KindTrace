@@ -7,7 +7,7 @@
     <div class = "appl">
     <div class="feature">
         <h1>Заявка </h1>
-        <form method="post">
+        <form enctype="multipart/form-data"  method="post" >
             {% csrf_token %}
             {{ form|crispy }}
 

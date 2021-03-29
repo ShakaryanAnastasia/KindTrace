@@ -4,11 +4,16 @@ from django.shortcuts import render, redirect
 
 
 from Shelter.forms import CommentForm, PetForm
-from Shelter.models import Pet, Profile
+from Shelter.models import Pet, Profile, Shelter
 
 
 def petapp(request):
-    apps = Pet.objects.all()
+    user = request.user
+    if user.is_authenticated and user.profile.type == 'Owner':
+        shelter = Shelter.objects.get(user=user.profile)
+        apps = Pet.objects.filter(shelter=shelter)
+    else:
+        apps = Pet.objects.all()
     return render(request, 'pets.html', {'apps': apps})
 
 
@@ -44,7 +49,7 @@ def addpet(request):
         form = PetForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return HttpResponseRedirect("/pets")
         else:
             error = 'error'
     form = PetForm()

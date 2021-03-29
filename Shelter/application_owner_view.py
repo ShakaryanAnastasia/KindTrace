@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -94,9 +95,7 @@ def delete(request, id):
 def applay(request, id):
     try:
         owner = OwnerApplication.objects.get(id=id)
-        user = User()
-        user.username = owner.email
-        user.password = "123"
+        user = User.objects.create_user(owner.email, owner.email, 'qwerty123')
         user.save()
         profile = Profile.objects.get(user=user)
         profile.first_name = owner.name

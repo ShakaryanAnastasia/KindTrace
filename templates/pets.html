@@ -4,35 +4,35 @@
 {% block title %} Creation form {% endblock %}
 
 {% block content %}
-{% include "includes/navbar.html" %}
+    {% include "includes/navbar.html" %}
 
-<div class = "pow">
-    <h1 class = "title">Наши питомцы</h1>
-
-
-  {% for el in apps %}
-
-        <div class = "column">
-        <div class = "style">
-    <h2>
-      <a href="{{ el.get_url }}">
-       {{ el.name }}
-      </a>
-    </h2>
-    <p class="date">
-      Возраст: {{ el.age}} год
-
-
-    </p>
-      <p class="date">
-      Пол: {{ el.get_sex_display}}
+    <div class="pow">
+        <h1 class="title">Наши питомцы</h1>
+        {% if user.is_authenticated and user.profile.type == 'Owner' %}
+            <button href="" type="submit" class="btn " style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;"><a href="addpet" class="nav-link">Добавить</a></button>
+        {% endif %}
+        {% for el in apps %}
+            <div class="column">
+                <div class="style">
+                    <h2>
+                        <a href="{{ el.get_url }}">
+                            {{ el.name }}
+                        </a>
+                    </h2>
+                    <p class="date">
+                        Возраст: {{ el.age }} год
 
 
-    </p>
-        </div>
-        </div>
+                    </p>
+                    <p class="date">
+                        Пол: {{ el.get_sex_display }}
 
-  {% endfor %}
-</div>
+
+                    </p>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
 
 {% endblock %}
