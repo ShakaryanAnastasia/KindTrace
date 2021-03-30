@@ -1,11 +1,27 @@
+import mimetypes
+import os
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.db.models import FileField
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, Http404, FileResponse
 from django.shortcuts import redirect, render
 
+from KindHeart.settings import BASE_DIR
 from Shelter import models
 from Shelter.forms import ApplicationOwnerForm
 from Shelter.models import OwnerApplication, Files, Profile
+
+
+def download_file(request, id):
+    file = Files.objects.get(id=id)
+    if os.path.exists(file.file.path):
+        # with open(file_path, 'rb') as fh:
+        # response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+        response = FileResponse(open(file.file.path, 'rb'))
+        return response
+    raise Http404
 
 
 def create(request):
@@ -37,6 +53,7 @@ def create(request):
     }
     return render(request, 'owner_application.html', data)
 
+
 def handle_uploaded_file(file, instance):
     try:
         if not file:
@@ -45,14 +62,15 @@ def handle_uploaded_file(file, instance):
         with open(path, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-        return path[7:]
+        return path
     except Exception as e:
         print(e)
         return None
 
+
 def app(request):
     apps = OwnerApplication.objects.all()
-    return render(request, 'owner_applications.html', {'apps':apps})
+    return render(request, 'owner_applications.html', {'apps': apps})
 
 
 def read_application_owner(request, id):
@@ -67,6 +85,7 @@ def read_application_owner(request, id):
     except OwnerApplication.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
+
 def delete(request, id):
     try:
         remove = OwnerApplication.objects.get(id=id)
@@ -74,6 +93,7 @@ def delete(request, id):
         return HttpResponseRedirect("/owner/applications")
     except OwnerApplication.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
+
 
 # def edit(request, id):
 #     try:

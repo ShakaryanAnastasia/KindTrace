@@ -10,9 +10,8 @@
         <p>{{ application.phoneNum }}</p>
         <p>{{ application.get_sex_display }}</p>
         {% for f in files %}
-            <p> <a href="{{f.file}}" download>{{f.file.name}}</a></p>
+            <p> <a href="/download/{{f.id}}" download>{{f.get_name}}</a></p>
         {% endfor %}
-
 
 </div>
 {% endblock %}

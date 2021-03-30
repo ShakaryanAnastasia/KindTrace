@@ -9,5 +9,6 @@ urlpatterns = [
     path('owner/applay/<int:id>/', application_owner_view.applay),
     path('addpet', pet_view.addpet, name ='addpet'),
     path('pets', pet_view.petapp, name='petapp'),
-    path('<int:id>/',pet_view.post_detail, name='post_detail')
+    path('<int:id>/',pet_view.post_detail, name='post_detail'),
+    path('download/<int:id>/', application_owner_view.download_file)
 ]

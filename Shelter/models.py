@@ -24,10 +24,10 @@ class OwnerApplication(models.Model):
 
 
 def user_directory_path(instance, filename):
-    return f'static/images/{instance.id}_{"".join(filename.split(".")[:-1])}.{filename.split(".")[-1]}'
+    return f'static/files/{instance.id}_{"".join(filename.split(".")[:-1])}.{filename.split(".")[-1]}'
 
 class Files(models.Model):
-    file = models.FileField(upload_to=user_directory_path, default='images/profile_image.jpg', verbose_name='Файлы')
+    file = models.FileField(upload_to=user_directory_path, default='files/profile_image.jpg', verbose_name='Файлы')
     o_application = models.ForeignKey(OwnerApplication, blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
@@ -36,6 +36,9 @@ class Files(models.Model):
 
     def __str__(self):
         return self.file.name
+
+    def get_name(self):
+        return self.file.name.split("/")[-1].split("_")[-1]
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
