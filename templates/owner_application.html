@@ -3,20 +3,20 @@
 {% block title %} Creation form {% endblock %}
 
 {% block content %}
-      {% include "includes/navbar.html" %}
-    <div class = "appl">
-    <div class="feature">
-        <h1>Заявка </h1>
-        <form enctype="multipart/form-data"  method="post" >
-            {% csrf_token %}
-            {{ form|crispy }}
+    {% include "includes/navbar.html" %}
+    <div class="appl">
+        <div class="feature">
+            <h1>Заявка </h1>
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
 
-            <span>{{ error }} </span>
+                <span>{{ error }} </span>
 
-            <button class="bpo" type="submit">Ввод</button>
+                <button class="bpo" type="submit">Ввод</button>
 
-        </form>
+            </form>
 
+        </div>
     </div>
-</div>
 {% endblock %}

@@ -16,9 +16,6 @@ from Shelter.models import OwnerApplication, Files, Profile
 def download_file(request, id):
     file = Files.objects.get(id=id)
     if os.path.exists(file.file.path):
-        # with open(file_path, 'rb') as fh:
-        # response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-        # response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
         response = FileResponse(open(file.file.path, 'rb'))
         return response
     raise Http404

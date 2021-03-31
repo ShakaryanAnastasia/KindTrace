@@ -40,9 +40,10 @@ class ApplicationOwnerForm(ModelForm):
         fields = ['name','surname', 'email', 'phoneNum', 'sex']
 
 class PetForm(ModelForm):
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     class Meta:
         model = Pet
-        fields = ['name', 'age', 'sex', 'type', 'color', 'wool', 'character', 'description', 'shelter', 'owner']
+        fields = ['name', 'age', 'sex', 'type', 'color', 'wool', 'character', 'description']
 
 
 class CommentForm(ModelForm):

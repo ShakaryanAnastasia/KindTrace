@@ -7,8 +7,15 @@
         <h1>Add pet</h1>
         <form method="post">
             {% csrf_token %}
-            {{ form|crispy }}
-
+            {#            {{ form|crispy }}#}
+            {{ form.name|as_crispy_field }}
+            {{ form.age|as_crispy_field }}
+            {{ form.sex|as_crispy_field }}
+            {{ form.type|as_crispy_field }}
+            {{ form.color|as_crispy_field }}
+            {{ form.wool|as_crispy_field }}
+            {{ form.character|as_crispy_field }}
+            {{ form.description|as_crispy_field }}
             <span>{{ error }} </span>
 
             <button class="btn" type="submit">Ввод</button>
@@ -16,5 +23,5 @@
         </form>
 
 
-</div>
+    </div>
 {% endblock %}

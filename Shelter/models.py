@@ -40,6 +40,8 @@ class Files(models.Model):
     def get_name(self):
         return self.file.name.split("/")[-1].split("_")[-1]
 
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100, blank=True)
@@ -145,3 +147,18 @@ class Comment(models.Model):
     dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="Пользователь")
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name="Питомец", related_name='comments')
+
+
+def user_directory_path_image(instance, filename):
+    return f'static/images/{instance.id}_{"".join(filename.split(".")[:-1])}.{filename.split(".")[-1]}'
+
+class Image(models.Model):
+    image = models.ImageField(upload_to=user_directory_path_image, default='images/profile_image.jpg', verbose_name='Изображения')
+    pet = models.ForeignKey(Pet, blank=True, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Изображения"
+        verbose_name_plural = "Изображения"
+
+    def __str__(self):
+        return self.file.name
