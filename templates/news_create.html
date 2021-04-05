@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Creation form {% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.html" %}
+
+    <div class="log ">
+        <h1>Добавить новость</h1>
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+
+            {{ form.title|as_crispy_field }}
+
+            {{ form.anons|as_crispy_field }}
+
+            {{ form.body|as_crispy_field }}
+
+            <span>{{ error }} </span>
+            {{ form.images|as_crispy_field }}
+            <button class="btn" type="submit">Ввод</button>
+
+        </form>
+    </div>
+{% endblock %}

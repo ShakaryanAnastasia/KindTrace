@@ -174,7 +174,7 @@ form.kom{
 
 .container{
     margin-top:100px;
-    margin-left: 800px;
+    margin-left: 600px;
 }
 
 .form-comment{
@@ -217,4 +217,9 @@ form.kom{
 }
 .scroll a{
     color: #ffffff;
+}
+.pet-img {
+    height: auto;
+    width: 10vw;
+    align-items: center;
 }

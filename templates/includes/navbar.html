@@ -12,13 +12,17 @@
                     <li class="nav-item active">
                         <a href="#" class="nav-link"></a>
                     </li>
-                    <li class="nav-item active">
-                        <a href="/pets" class="nav-link">Питомцы</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/" class="nav-link">Новости </a>
-                    </li>
-                    {% if user.is_authenticated and user.profile.type == 'Client' %}
+                    {% if not user.is_authenticated or user.profile.type != 'Moderator' %}
+                        <li class="nav-item active">
+                            <a href="/pets" class="nav-link">Питомцы</a>
+                        </li>
+                    {% endif %}
+                    {% if not user.is_authenticated or user.profile.type != 'Moderator' %}
+                        <li class="nav-item">
+                            <a href="/news" class="nav-link">Новости </a>
+                        </li>
+                    {% endif %}
+                    {% if user.is_authenticated and user.profile.type != 'Moderator' %}
                         <li class="nav-item">
                             <a href="#" class="nav-link">Задачи</a>
                         </li>
@@ -28,6 +32,11 @@
 
                             <a href="/owner/application" class="nav-link">Стать хозяином приюта</a>
 
+                        </li>
+                    {% endif %}
+                    {% if user.is_authenticated and user.profile.type == 'Moderator' %}
+                        <li class="nav-item">
+                            <a href="/owner/applications" class="nav-link">Заявки</a>
                         </li>
                     {% endif %}
                     {% if user.is_authenticated %}

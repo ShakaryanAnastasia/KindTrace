@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 
-from Shelter.models import OwnerApplication, Pet, Comment
+from Shelter.models import OwnerApplication, Pet, Comment, News
 
 
 class SignUpForm(UserCreationForm):
@@ -55,3 +55,9 @@ class CommentForm(ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-comment' }),
 
         }
+
+class NewsForm(ModelForm):
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    class Meta:
+        model = News
+        fields = ['title', 'body', 'anons']

@@ -1,4 +1,4 @@
-from Shelter import application_owner_view, pet_view
+from Shelter import application_owner_view, pet_view, new_view
 from django.urls import path
 
 urlpatterns = [
@@ -10,5 +10,10 @@ urlpatterns = [
     path('addpet', pet_view.addpet, name ='addpet'),
     path('pets', pet_view.petapp, name='petapp'),
     path('<int:id>/',pet_view.post_detail, name='post_detail'),
-    path('download/<int:id>/', application_owner_view.download_file)
+    path('download/<int:id>/', application_owner_view.download_file),
+    path('news',new_view.news, name = 'news'),
+    path('news/<int:id>/', new_view.news_detail, name='news_detail'),
+    path('editnews/<int:id>/', new_view.editnews, name='editnews'),
+    path('deletenews/<int:id>/', new_view.deletenews),
+    path('addnews', new_view.addnews )
 ]

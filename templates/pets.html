@@ -9,9 +9,11 @@
     <div class="pow">
         <h1 class="title">Наши питомцы</h1>
         {% if user.is_authenticated and user.profile.type == 'Owner' %}
-            <button href="" type="submit" class="btn " style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;"><a href="addpet" class="nav-link">Добавить</a></button>
+            <button href="" type="submit" class="btn "
+                    style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;"><a
+                    href="addpet" class="nav-link">Добавить</a></button>
         {% endif %}
-        {% for el in apps %}
+        {% for el,image in apps %}
             <div class="column">
                 <div class="style">
                     <h2>
@@ -21,14 +23,13 @@
                     </h2>
                     <p class="date">
                         Возраст: {{ el.age }} год
-
-
                     </p>
                     <p class="date">
                         Пол: {{ el.get_sex_display }}
-
-
                     </p>
+                    {% if not image == null %}
+                        <img src='{{ image }}' class="pet-img" alt="pet img">
+                    {% endif %}
                 </div>
             </div>
 

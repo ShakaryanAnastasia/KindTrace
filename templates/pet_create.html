@@ -3,9 +3,10 @@
 {% block title %} Creation form {% endblock %}
 
 {% block content %}
-    <div class="addpetclass">
-        <h1>Add pet</h1>
-        <form method="post">
+    {% include "includes/navbar.html" %}
+    <div class="addpetclass" style="margin-top: 80px">
+        <h1>Добавление питомца</h1>
+        <form enctype="multipart/form-data" method="post">
             {% csrf_token %}
             {#            {{ form|crispy }}#}
             {{ form.name|as_crispy_field }}
@@ -17,7 +18,7 @@
             {{ form.character|as_crispy_field }}
             {{ form.description|as_crispy_field }}
             <span>{{ error }} </span>
-
+            {{ form.images|as_crispy_field }}
             <button class="btn" type="submit">Ввод</button>
 
         </form>

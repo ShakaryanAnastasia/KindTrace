@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include "includes/navbar.html" %}
+    <div class="container-fluid" id="news">
+     {% if user.is_authenticated and user.profile.type == 'Owner' %}
+            <button href="" type="submit" class="btn "
+                    style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;"><a
+                    href="addnews" class="nav-link">Добавить</a></button>
+        {% endif %}
+        {% for el,image in apps %}
+            <div class='alert'>
+                <a href="{{ el.got_url }}">
+                    {% if not image == null %}
+                        <img src='{{ image }}' class="pet-img" alt="pet img">
+                    {% endif %}
+                    <h3> {{ el.title }}</h3>
+                </a>
+                <p>{{ el.anons }}</p>
+
+                <a href="editnews/{{ el.id }}" class="btn">Редактировать</a><br>
+                <a href="deletenews/{{ el.id }}" class="btn">Удалить</a>
+
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
