@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 from Shelter import models
@@ -65,7 +65,6 @@ def addpet(request):
             pet.description = form.cleaned_data['description']
             pet.shelter = shelter
             pet.save()
-            # form.save()
             if images:
                 for i in images:
                     file_path = handle_uploaded_image(i, pet)
@@ -95,3 +94,49 @@ def handle_uploaded_image(file, instance):
     except Exception as e:
         print(e)
         return None
+
+
+def editpet(request, id):
+    try:
+        sexes = Pet.SEX_CHOICES
+        pet = Pet.objects.get(id=id)
+        images = list(Image.objects.filter(pet=pet))
+        if request.method == "POST":
+            images = request.FILES.getlist('images')
+            pet.name = request.POST.get("name")
+            pet.age = request.POST.get("age")
+            pet.sex = request.POST.get("sex")
+            pet.type = request.POST.get("type")
+            pet.color = request.POST.get("color")
+            pet.wool = request.POST.get("wool")
+            pet.character = request.POST.get("character")
+            pet.description = request.POST.get("description")
+            pet.save()
+            if images:
+                for i in images:
+                    file_path = handle_uploaded_image(i, pet)
+                    if file_path:
+                        fl = Image(pet=pet, image=file_path)
+                        fl.save()
+            return HttpResponseRedirect("/news")
+        else:
+            return render(request, "pet_edit.html", {"pet": pet, "images": images, "sexes": sexes})
+    except Pet.DoesNotExist:
+        return HttpResponseNotFound("<h2>News not found</h2>")
+
+def deletepet(request, id):
+    try:
+        remove = Pet.objects.get(id=id)
+        remove.delete()
+        return HttpResponseRedirect("/pets")
+    except Pet.DoesNotExist:
+        return HttpResponseNotFound("<h2>News not found</h2>")
+
+def deleteimages_pet(request, id):
+    try:
+        remove = Image.objects.get(id=id)
+        id_pet = remove.pet.id
+        remove.delete()
+        return HttpResponseRedirect(f"/editpet/{id_pet}")
+    except Pet.DoesNotExist:
+        return HttpResponseNotFound("<h2>News not found</h2>")

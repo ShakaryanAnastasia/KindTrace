@@ -34,13 +34,13 @@ class SignUpForm(UserCreationForm):
 
 
 class ApplicationOwnerForm(ModelForm):
-    files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='Файлы')
     class Meta:
         model = OwnerApplication
         fields = ['name','surname', 'email', 'phoneNum', 'sex']
 
 class PetForm(ModelForm):
-    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='Изображения')
     class Meta:
         model = Pet
         fields = ['name', 'age', 'sex', 'type', 'color', 'wool', 'character', 'description']
@@ -57,7 +57,7 @@ class CommentForm(ModelForm):
         }
 
 class NewsForm(ModelForm):
-    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='Изображения')
     class Meta:
         model = News
         fields = ['title', 'body', 'anons']

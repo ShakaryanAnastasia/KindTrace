@@ -17,6 +17,7 @@ def news(request):
         images = [Image.objects.filter(news=app).first() for app in apps]
     return render(request, 'news.html', {'apps': zip(apps, images)})
 
+
 def news_detail(request, id):
     new = News.objects.get(id=id)
     images = list(Image.objects.filter(news=new))
@@ -42,26 +43,35 @@ def news_detail(request, id):
                        'new_comment': new_comment,
                        'comment_form': comment_form})
 
+
 def editnews(request, id):
     try:
         news = News.objects.get(id=id)
-
+        images = list(Image.objects.filter(news=news))
         if request.method == "POST":
+            images = request.FILES.getlist('images')
             news.title = request.POST.get("title")
             news.anons = request.POST.get("anons")
             news.body = request.POST.get("body")
             news.save()
-            return HttpResponseRedirect("/owner/news")
+            if images:
+                for i in images:
+                    file_path = handle_uploaded_image(i, news)
+                    if file_path:
+                        fl = Image(news=news, image=file_path)
+                        fl.save()
+            return HttpResponseRedirect("/news")
         else:
-            return render(request, "news_edit.html", {"news": news})
+            return render(request, "news_edit.html", {"news": news, "images": images})
     except News.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
+
 
 def deletenews(request, id):
     try:
         remove = News.objects.get(id=id)
         remove.delete()
-        return HttpResponseRedirect("/owner/news")
+        return HttpResponseRedirect("/news")
     except News.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
 
@@ -80,7 +90,6 @@ def addnews(request):
             news.body = form.cleaned_data['body']
             news.shelter = shelter
             news.save()
-            #form.save()
             if images:
                 for i in images:
                     file_path = handle_uploaded_image(i, news)
@@ -96,3 +105,12 @@ def addnews(request):
         'error': error
     }
     return render(request, 'news_create.html', data)
+
+def deleteimages_new(request, id):
+    try:
+        remove = Image.objects.get(id=id)
+        id_news = remove.news.id
+        remove.delete()
+        return HttpResponseRedirect(f"/editnews/{id_news}")
+    except News.DoesNotExist:
+        return HttpResponseNotFound("<h2>News not found</h2>")

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_filters %}
+{% block title %} {{ shelter.title }} {% endblock %}
+
+{% block content %}
+    {% include "includes/navbar.html" %}
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="feature" style="margin-top: 100px">
+            <br><br>
+
+            <label>
+                <input type="text" name="name" class='form-control' value="{{ pet.name }}"/>
+            </label>
+
+            <br><br>
+
+            <label>
+                <input type="text" name="age" class='form-control' value="{{ pet.age }}"/>
+            </label>
+
+            <br><br>
+{#            <label>#}
+{#                <input type="text" name="sex" class='form-cont' value="{{ pet.get_sex_display }}"/>#}
+{#            </label>#}
+            <select class="form-select" id="floatingSelect" name="petSex_{{ pet.id }}" required>
+                {% for sex,f_sex in sexes %}
+                    {% if pet.sex == sex %}
+                        <option selected value="{{ sex }}">{{ f_sex }}</option>
+                    {% else %}
+                        <option value="{{ sex }}">{{ f_sex }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <br><br>
+            <label>
+                <input type="text" name="type" class='form-cont' value="{{ pet.get_type_display }}"/>
+            </label>
+            <br><br>
+            <label>
+                <input type="text" name="color" class='form-cont' value="{{ pet.get_color_display }}"/>
+            </label>
+            <br><br>
+            <label>
+                <input type="text" name="wool" class='form-cont' value="{{ pet.get_wool_display }}"/>
+            </label>
+            <br><br>
+            <label>
+                <input type="text" name="character" class='form-cont' value="{{ pet.get_character_display }}"/>
+            </label>
+            <br><br>
+            <textarea class="form-control is-invalid" name="description" required>{{ pet.description }}</textarea>
+            <br><br>
+            <p><input type="file" name="images" multiple accept="image/*">
+                <br><br>
+                {% for image in images %}
+                    {% if image %}
+                        <img src='/{{ image }}' class="pet-img" alt="pet img">
+                        <a href="/pet/deleteimages/{{ image.id }}" class="btn">Удалить</a>
+                        <br><br>
+                    {% endif %}
+                {% endfor %}
+                <br><br>
+                <input type="submit" class='btn' value="Сохранить">
+        </div>
+    </form>
+{% endblock %}

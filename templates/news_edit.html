@@ -1,33 +1,40 @@
 {% extends 'base.html' %}
 
 {% load crispy_forms_filters %}
-{% block title %} {{ shelter.title}} {% endblock %}
 
 {% block content %}
     {% include "includes/navbar.html" %}
-    <form method="POST">
+    <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
-    <div class="feature">
-        <br><br>
+        <div class="pow">
+            <br><br>
+            <label for="validationTextarea" class="form-label">Название новости</label>
+            <br><br>
+            <label>
+                <input type="text" name="title" class='form-control' value="{{ news.title }}"/>
+            </label>
+            <br><br>
+            <label for="validationTextarea" class="form-label">Анонс новости</label>
+            <br><br>
+            <label>
+                <input type="text" name="anons" class='form-control' value="{{ news.anons }}"/>
+            </label>
+            <br><br>
+            <label for="validationTextarea" class="form-label">Содержание новости</label>
+            <textarea class="form-control is-invalid" name="body" required>{{ news.body }}</textarea>
 
-        <label>
-            <input type="text" name="title" class ='form-control' value="{{news.title}}" />
-        </label>
-
-        <br><br>
-
-        <label>
-            <input type="text" name="anons" class ='form-control' value="{{news.anons}}" />
-        </label>
-
-        <br><br>
-        <label>
-            <input type="text" name="body" class ='form-cont' value="{{news.body}}" />
-        </label>
-
-        <br><br>
-
-        <input type="submit" class = 'btn' value="Сохранить" >
-    </div>
+            <br><br>
+            <p><input type="file" name="images" multiple accept="image/*">
+                <br><br>
+                {% for image in images %}
+                    {% if image %}
+                        <img src='/{{ image }}' class="pet-img" alt="pet img">
+                        <a href="/news/deleteimages/{{ image.id }}" class="btn">Удалить</a>
+                        <br><br>
+                    {% endif %}
+                {% endfor %}
+                <br><br>
+                <input type="submit" class='btn' value="Сохранить">
+        </div>
     </form>
 {% endblock %}

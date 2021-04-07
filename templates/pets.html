@@ -7,7 +7,6 @@
     {% include "includes/navbar.html" %}
 
     <div class="pow">
-        <h1 class="title">Наши питомцы</h1>
         {% if user.is_authenticated and user.profile.type == 'Owner' %}
             <button href="" type="submit" class="btn "
                     style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;"><a
@@ -32,7 +31,10 @@
                     {% endif %}
                 </div>
             </div>
-
+            {% if user.is_authenticated and user.profile.type == 'Owner' %}
+                <a href="editpet/{{ el.id }}" class="btn">Редактировать</a><br>
+                <a href="deletepet/{{ el.id }}" class="btn">Удалить</a>
+            {% endif %}
         {% endfor %}
     </div>
 

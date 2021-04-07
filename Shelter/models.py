@@ -142,9 +142,9 @@ class Pet(models.Model):
                        args=[self.id])
 
 class News(models.Model):
-    title = models.CharField(max_length=200)
-    anons = models.CharField(max_length=200, default="", null=True)
-    body = models.TextField(null=True)
+    title = models.CharField(max_length=200, verbose_name="Название")
+    anons = models.CharField(max_length=200, default="", null=True, verbose_name="Анонс")
+    body = models.TextField(null=True, verbose_name="Содержание")
     objects = models.Manager()
     shelter = models.ForeignKey(Shelter, on_delete=models.CASCADE)
 
