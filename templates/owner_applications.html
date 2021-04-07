@@ -3,22 +3,23 @@
 {% block title %} Creation form {% endblock %}
 
 {% block content %}
-    <div class="feature">
+    {% include "includes/navbar.html" %}
+    <div class="feature" style="margin-top: 70px">
 
-    {% if apps %}
-        {% for el in apps %}
-            <div class="alert alert-warning">
+        {% if apps %}
+            {% for el in apps %}
+                <div class="alert alert-warning">
 
-            <a href="read/{{el.id}}" class="h3">{{ el.name }} {{ el.surname }}</a>
-            <p> {{ el.email }}</p>
-             <a href="applay/{{el.id}}" class="btn">Принять</a>
-             <a href="delete/{{el.id}}" class="btn">Отклонить</a>
+                    <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
+                    <p> {{ el.email }}</p>
+                    <a href="applay/{{ el.id }}" class="btn">Принять</a>
+                    <a href="delete/{{ el.id }}" class="btn">Отклонить</a>
 
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No apps</p>
-    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No apps</p>
+        {% endif %}
 
-</div>
+    </div>
 {% endblock %}

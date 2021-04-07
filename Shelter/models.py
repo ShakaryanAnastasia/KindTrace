@@ -154,6 +154,26 @@ class News(models.Model):
         return reverse('news_detail',
                        args=[self.id])
 
+class Task(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Название")
+    body = models.TextField(null=True, verbose_name="Содержание")
+    dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
+    dateExpiration = models.DateField(verbose_name="Дата выполнения")
+    objects = models.Manager()
+    STATUS_CHOICES = (
+        ('free', "свободная"),
+        ('progress', "выполняется"),
+    )
+    status = models.CharField(max_length=15, verbose_name="Статус", choices=STATUS_CHOICES)
+    shelter = models.ForeignKey(Shelter, on_delete=models.CASCADE)
+
+    def str(self):
+        return " ".join([self.title])
+
+    def get_url(self):
+        return reverse('tasks_detail',
+                       args=[self.id])
+
 class Comment(models.Model):
     title = models.CharField(max_length=200, verbose_name="Заговолок")
     body = models.TextField(verbose_name="Комментарий")
@@ -161,7 +181,7 @@ class Comment(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="Пользователь")
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name="Питомец", related_name='comments', null=True)
     news = models.ForeignKey(News, on_delete=models.CASCADE, verbose_name="Новости", related_name='comments', default='New', null=True)
-
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Задача", related_name='comments', null=True)
 def user_directory_path_image(instance, filename):
     return f'static/images/{instance.id}_{"".join(filename.split(".")[:-1])}.{filename.split(".")[-1]}'
 
@@ -169,6 +189,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to=user_directory_path_image, default='images/profile_image.jpg', verbose_name='Изображения')
     pet = models.ForeignKey(Pet, blank=True, null=True, on_delete=models.CASCADE)
     news = models.ForeignKey(News, blank=True, null=True, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, blank=True, null=True, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Изображения"
         verbose_name_plural = "Изображения"

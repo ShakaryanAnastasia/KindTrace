@@ -21,10 +21,7 @@
             </label>
 
             <br><br>
-{#            <label>#}
-{#                <input type="text" name="sex" class='form-cont' value="{{ pet.get_sex_display }}"/>#}
-{#            </label>#}
-            <select class="form-select" id="floatingSelect" name="petSex_{{ pet.id }}" required>
+            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="sex" required>
                 {% for sex,f_sex in sexes %}
                     {% if pet.sex == sex %}
                         <option selected value="{{ sex }}">{{ f_sex }}</option>
@@ -33,24 +30,50 @@
                     {% endif %}
                 {% endfor %}
             </select>
+
+             <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="type" required>
+                {% for type,f_type in types %}
+                    {% if pet.type == type %}
+                        <option selected value="{{ type }}">{{ f_type }}</option>
+                    {% else %}
+                        <option value="{{ type }}">{{ f_type }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="color" required>
+                {% for color,f_color in colors %}
+                    {% if pet.color == color %}
+                        <option selected value="{{ color }}">{{ f_color }}</option>
+                    {% else %}
+                        <option value="{{ color }}">{{ f_color }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="wool" required>
+                {% for wool,f_wool in wools %}
+                    {% if pet.wool == wool %}
+                        <option selected value="{{ wool }}">{{ f_wool }}</option>
+                    {% else %}
+                        <option value="{{ wool }}">{{ f_wool }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="character" required>
+                {% for character,f_character in characters %}
+                    {% if pet.character == character %}
+                        <option selected value="{{ character }}">{{ f_character }}</option>
+                    {% else %}
+                        <option value="{{ character }}">{{ f_character }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
             <br><br>
             <label>
-                <input type="text" name="type" class='form-cont' value="{{ pet.get_type_display }}"/>
+                <textarea class="form-control" name="description" required>{{ pet.description }}</textarea>
             </label>
-            <br><br>
-            <label>
-                <input type="text" name="color" class='form-cont' value="{{ pet.get_color_display }}"/>
-            </label>
-            <br><br>
-            <label>
-                <input type="text" name="wool" class='form-cont' value="{{ pet.get_wool_display }}"/>
-            </label>
-            <br><br>
-            <label>
-                <input type="text" name="character" class='form-cont' value="{{ pet.get_character_display }}"/>
-            </label>
-            <br><br>
-            <textarea class="form-control is-invalid" name="description" required>{{ pet.description }}</textarea>
             <br><br>
             <p><input type="file" name="images" multiple accept="image/*">
                 <br><br>

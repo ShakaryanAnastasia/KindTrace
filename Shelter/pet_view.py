@@ -99,6 +99,10 @@ def handle_uploaded_image(file, instance):
 def editpet(request, id):
     try:
         sexes = Pet.SEX_CHOICES
+        types = Pet.TYPE_CHOICES
+        colors = Pet.COLOR_CHOICES
+        wools = Pet.WOOL_CHOICES
+        characters = Pet.CHARACTER_CHOICES
         pet = Pet.objects.get(id=id)
         images = list(Image.objects.filter(pet=pet))
         if request.method == "POST":
@@ -118,11 +122,14 @@ def editpet(request, id):
                     if file_path:
                         fl = Image(pet=pet, image=file_path)
                         fl.save()
-            return HttpResponseRedirect("/news")
+            return HttpResponseRedirect("/pets")
         else:
-            return render(request, "pet_edit.html", {"pet": pet, "images": images, "sexes": sexes})
+            return render(request, "pet_edit.html",
+                          {"pet": pet, "images": images, "sexes": sexes, "types": types, "colors": colors,
+                           "wools": wools, "characters": characters})
     except Pet.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
+
 
 def deletepet(request, id):
     try:
@@ -131,6 +138,7 @@ def deletepet(request, id):
         return HttpResponseRedirect("/pets")
     except Pet.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
+
 
 def deleteimages_pet(request, id):
     try:
