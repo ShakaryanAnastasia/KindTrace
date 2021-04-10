@@ -1,4 +1,4 @@
-from Shelter import application_owner_view, pet_view, new_view
+from Shelter import application_owner_view, pet_view, new_view, task_view
 from django.urls import path
 
 urlpatterns = [
@@ -20,4 +20,9 @@ urlpatterns = [
     path('addnews', new_view.addnews),
     path('news/deleteimages/<int:id>/', new_view.deleteimages_new),
     path('pet/deleteimages/<int:id>/', pet_view.deleteimages_pet),
+    path('tasks', task_view.tasks, name='tasks'),
+    path('addtask', task_view.addtask),
+    path('task/<int:id>/', task_view.task_detail, name='task_detail'),
+    path('edittask/<int:id>/', task_view.edittask, name='edittask'),
+    path('deletetask/<int:id>/', task_view.deletetask),
 ]

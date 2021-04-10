@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+    {% include "includes/navbar.html" %}
+    <div class="addpetclass" style="margin-top: 80px">
+        <h1>Добавление задачи</h1>
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {{ form.title|as_crispy_field }}
+            {{ form.body|as_crispy_field }}
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                {{ form_date.dateExpiration|as_crispy_field }}
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+            <span>{{ error }} </span>
+            {{ form.images|as_crispy_field }}
+            <button class="btn" type="submit">Ввод</button>
+        </form>
+    </div>
+    <script>
+        $(function () {
+            $("#datetimepicker1").datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+            });
+        });
+    </script>
+
+{% endblock %}

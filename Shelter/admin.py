@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib import admin
 
-from .models import OwnerApplication, Files, Shelter, Pet, Comment, Image, News
+from .models import OwnerApplication, Files, Shelter, Pet, Comment, Image, News, Task
 from .models import Profile
 
 admin.site.register(OwnerApplication)
@@ -12,3 +12,4 @@ admin.site.register(Shelter)
 admin.site.register(Pet)
 admin.site.register(Comment)
 admin.site.register(News)
+admin.site.register(Task)

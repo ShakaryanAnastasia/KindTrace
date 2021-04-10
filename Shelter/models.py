@@ -157,8 +157,8 @@ class News(models.Model):
 class Task(models.Model):
     title = models.CharField(max_length=200, verbose_name="Название")
     body = models.TextField(null=True, verbose_name="Содержание")
-    dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
-    dateExpiration = models.DateField(verbose_name="Дата выполнения")
+    dateCreate = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
+    dateExpiration = models.DateTimeField(verbose_name="Дата выполнения")
     objects = models.Manager()
     STATUS_CHOICES = (
         ('free', "свободная"),
@@ -171,7 +171,7 @@ class Task(models.Model):
         return " ".join([self.title])
 
     def get_url(self):
-        return reverse('tasks_detail',
+        return reverse('task_detail',
                        args=[self.id])
 
 class Comment(models.Model):
@@ -180,8 +180,9 @@ class Comment(models.Model):
     dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="Пользователь")
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name="Питомец", related_name='comments', null=True)
-    news = models.ForeignKey(News, on_delete=models.CASCADE, verbose_name="Новости", related_name='comments', default='New', null=True)
+    news = models.ForeignKey(News, on_delete=models.CASCADE, verbose_name="Новости", related_name='comments', null=True)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Задача", related_name='comments', null=True)
+
 def user_directory_path_image(instance, filename):
     return f'static/images/{instance.id}_{"".join(filename.split(".")[:-1])}.{filename.split(".")[-1]}'
 

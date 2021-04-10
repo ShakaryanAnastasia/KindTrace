@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 
-from Shelter.models import OwnerApplication, Pet, Comment, News
+from Shelter.models import OwnerApplication, Pet, Comment, News, Task
 
 
 class SignUpForm(UserCreationForm):
@@ -19,8 +19,8 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name','phoneNum','sex',
-                   'password1', 'password2',)
+        fields = ('username', 'first_name', 'last_name', 'phoneNum', 'sex',
+                  'password1', 'password2',)
 
     widgets = {
         'username': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
@@ -35,12 +35,16 @@ class SignUpForm(UserCreationForm):
 
 class ApplicationOwnerForm(ModelForm):
     files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='Файлы')
+
     class Meta:
         model = OwnerApplication
-        fields = ['name','surname', 'email', 'phoneNum', 'sex']
+        fields = ['name', 'surname', 'email', 'phoneNum', 'sex']
+
 
 class PetForm(ModelForm):
-    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='Изображения')
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False,
+                              label='Изображения')
+
     class Meta:
         model = Pet
         fields = ['name', 'age', 'sex', 'type', 'color', 'wool', 'character', 'description']
@@ -52,12 +56,34 @@ class CommentForm(ModelForm):
         fields = ['title', 'body']
 
         widgets = {
-            'body': forms.Textarea(attrs={'class': 'form-comment' }),
+            'body': forms.Textarea(attrs={'class': 'form-comment'}),
 
         }
 
+
 class NewsForm(ModelForm):
-    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='Изображения')
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False,
+                              label='Изображения')
+
     class Meta:
         model = News
         fields = ['title', 'body', 'anons']
+
+
+class TaskForm(ModelForm):
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False,
+                              label='Изображения')
+
+    class Meta:
+        model = Task
+        fields = ['title', 'body']
+
+
+class DateForm(forms.Form):
+    dateExpiration = forms.DateTimeField(
+        input_formats=['%Y-%m-%d %H:%M'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker1'
+        }), label='Дата выполнения'
+    )

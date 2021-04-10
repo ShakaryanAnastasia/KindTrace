@@ -5,35 +5,30 @@
 {% block content %}
     {% include "includes/navbar.html" %}
     <div class="container">
-        <h1>{{ post.name }}</h1><br>
-        <p class="date">
-            Возраст: {{ post.age }} год <br>
-            Пол: {{ post.get_sex_display }}<br>
-            Цвет: {{ post.get_color_display }}<br>
-            Тип шерсти: {{ post.get_wool_display }}<br>
-            Характер: {{ post.get_character_display }}<br>
-            Описание: {{ post.description }}<br>
-            Приют: {{ post.shelter }}<br>
-        </p>
-        <div class="style">
+        <h1>{{ task.title }}</h1><br>
+        Дата содания: {{ task.dateCreate }}<br>
+        Дата выполнения: {{ task.dateExpiration }}<br>
         {% for image in images %}
             {% if image %}
                 <img src='/{{ image }}' class="pet-img" alt="pet img">
             {% endif %}
         {% endfor %}
-        </div>
-        {{ post.body|linebreaks }}<br>
-        {% with comments.count as total_comments %}
-            <h2>
-                {{ total_comments }} комментариев
-            </h2>
-        {% endwith %}
+        <p class="date">
+            {{ task.body }}<br>
+            {% with comments.count as total_comments %}
+                <h2>
+                    {{ total_comments }} комментариев
+                </h2>
+            {% endwith %}
         {% for comment in comments %}
             <div class="comment">
                 <p class="info">
                     {{ comment.user }}<br>
                     Тема: {{ comment.title }}
+
+
                 </p>
+
                 {{ comment.body|linebreaks }}
                 {{ comment.dateCreate }} <br>
             </div>
@@ -61,7 +56,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Авторизуйтесь в системе</h5>
-                   
                 </div>
                 <div class="modal-body">
                     <p>Для того, чтобы оставить комментарий, авторизуйтесь в системе</p>
@@ -93,4 +87,3 @@
 
     </script>
 {% endblock %}
-

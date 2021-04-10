@@ -25,12 +25,13 @@ def news_detail(request, id):
     new_comment = None
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.user = Profile.objects.get(user=request.user)
-            new_comment.news = new
-            new_comment.save()
-            return JsonResponse({'id': id})
+        if request.user.is_authenticated:
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                new_comment.user = Profile.objects.get(user=request.user)
+                new_comment.news = new
+                new_comment.save()
+                return JsonResponse({'id': id})
         else:
             return JsonResponse({})
     else:

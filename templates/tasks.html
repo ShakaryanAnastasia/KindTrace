@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include "includes/navbar.html" %}
+    <div class="container-fluid" id="tasks">
+        {% if user.is_authenticated and user.profile.type == 'Owner' %}
+            <button href="" type="submit" class="btn" style="margin-top: 100px" s><a href="addtask" class="nav-link">Добавить</a>
+            </button>
+        {% endif %}
+        {% for el,image in apps %}
+            <div class='alert'>
+                <a href="{{ el.get_url }}">
+                    {% if not image == null %}
+                        <img src='{{ image }}' class="pet-img" alt="pet img">
+                    {% endif %}
+                    <h3> {{ el.title }}</h3>
+                </a>
+                <p>Дата создания: {{ el.dateCreate }}</p>
+                <p>Дата выполнения: {{ el.dateExpiration }}</p>
+                {% if user.is_authenticated and user.profile.type == 'Owner' %}
+                    <a href="edittask/{{ el.id }}" class="btn">Редактировать</a><br>
+                    <a href="deletetask/{{ el.id }}" class="btn">Удалить</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
