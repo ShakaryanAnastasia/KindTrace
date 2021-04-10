@@ -1,7 +1,7 @@
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render
 
-from Shelter.forms import CommentForm, TaskForm, DateForm
+from Shelter.forms import CommentForm, TaskForm
 from Shelter.models import Shelter, Task, Image, Profile
 from Shelter.pet_view import handle_uploaded_image
 
@@ -79,13 +79,12 @@ def addtask(request):
     error = ''
     if request.method == 'POST':
         form = TaskForm(request.POST, request.FILES)
-        form_date = DateForm(request.POST)
         images = request.FILES.getlist('images')
-        if form.is_valid() and form_date.is_valid():
+        if form.is_valid():
             task = Task()
             task.title = form.cleaned_data['title']
             task.body = form.cleaned_data['body']
-            task.dateExpiration = form_date.cleaned_data['dateExpiration']
+            task.dateExpiration = form.cleaned_data['dateExpiration']
             task.status = 'free'
             task.shelter = shelter
             task.save()
@@ -99,19 +98,17 @@ def addtask(request):
         else:
             error = 'error'
     form = TaskForm()
-    form_date = DateForm()
     data = {
         'form': form,
-        'form_date': form_date,
         'error': error
     }
     return render(request, 'task_create.html', data)
 
-# def deleteimages_task(request, id):
-#     try:
-#         remove = Image.objects.get(id=id)
-#         id_task = remove.task.id
-#         remove.delete()
-#         return HttpResponseRedirect(f"/edittask/{id_task}")
-#     except Task.DoesNotExist:
-#         return HttpResponseNotFound("<h2>News not found</h2>")
+def deleteimages_task(request, id):
+    try:
+        remove = Image.objects.get(id=id)
+        id_task = remove.task.id
+        remove.delete()
+        return HttpResponseRedirect(f"/edittask/{id_task}")
+    except Task.DoesNotExist:
+        return HttpResponseNotFound("<h2>News not found</h2>")

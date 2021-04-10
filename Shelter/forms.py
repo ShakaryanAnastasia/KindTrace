@@ -73,13 +73,6 @@ class NewsForm(ModelForm):
 class TaskForm(ModelForm):
     images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False,
                               label='Изображения')
-
-    class Meta:
-        model = Task
-        fields = ['title', 'body']
-
-
-class DateForm(forms.Form):
     dateExpiration = forms.DateTimeField(
         input_formats=['%Y-%m-%d %H:%M'],
         widget=forms.DateTimeInput(attrs={
@@ -87,3 +80,9 @@ class DateForm(forms.Form):
             'data-target': '#datetimepicker1'
         }), label='Дата выполнения'
     )
+
+    class Meta:
+        model = Task
+        fields = ['title', 'body', 'dateExpiration']
+
+
