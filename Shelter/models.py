@@ -19,6 +19,7 @@ class OwnerApplication(models.Model):
     )
     sex = models.CharField(max_length=10, verbose_name="пол", choices=SEX_CHOICES, default='женский')
 
+
     def __str__(self):
         return " ".join([self.name, self.surname])
 

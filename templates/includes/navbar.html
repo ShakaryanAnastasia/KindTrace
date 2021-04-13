@@ -41,7 +41,15 @@
                     {% endif %}
                     {% if user.is_authenticated %}
                         <li class="scroll ">
-                            <a href="#" class="down">Личный кабинет</a>
+                            {% if user.profile.type == 'Owner' %}
+                                <a href="/owner/editprofile" class="down">Личный кабинет</a>
+                            {% endif %}
+                            {% if user.profile.type == 'Client' %}
+                                <a href="#" class="down">Личный кабинет</a>
+                            {% endif %}
+                            {% if user.profile.type == 'Moderator' %}
+                                <a href="#" class="down">Личный кабинет</a>
+                            {% endif %}
                             <ul class="submenu">
                                 <li><a href="/logout">Выйти</a></li>
                             </ul>

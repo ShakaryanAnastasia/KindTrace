@@ -1,15 +1,17 @@
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views.generic import UpdateView
 
 from Shelter.forms import SignUpForm
-from Shelter.models import Profile
+from Shelter.models import Profile, Shelter
 
 
 def home_view(request):
     return render(request, 'home.html')
+
 
 def signup_view(request):
     error = ' '
@@ -37,9 +39,31 @@ def signup_view(request):
     }
     return render(request, 'signup.html', data)
 
+
 class PersonUpdateView(UpdateView):
     model = Profile
     form_class = SignUpForm
     template_name = 'person_update_form.html'
 
 
+def editprofile(request):
+    try:
+        sexes = Profile.SEX_CHOICES
+        profile = Profile.objects.get(user=request.user)
+        shelter = Shelter.objects.get(user=profile)
+        if request.method == "POST":
+            profile.first_name = request.POST.get("first_name")
+            profile.last_name = request.POST.get("last_name")
+            profile.phoneNum = request.POST.get("phoneNum")
+            profile.sex = request.POST.get("sex")
+            shelter.title = request.POST.get("title")
+            shelter.address = request.POST.get("address")
+            shelter.description = request.POST.get("description")
+            profile.save()
+            shelter.save()
+            return HttpResponseRedirect("/owner/editprofile")
+        else:
+            return render(request, "owner_profile.html",
+                          {"profile": profile, "shelter": shelter, "sexes": sexes})
+    except Profile.DoesNotExist:
+        return HttpResponseNotFound("<h2>News not found</h2>")

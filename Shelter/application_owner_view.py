@@ -10,7 +10,7 @@ from django.shortcuts import redirect, render
 from KindHeart.settings import BASE_DIR
 from Shelter import models
 from Shelter.forms import ApplicationOwnerForm
-from Shelter.models import OwnerApplication, Files, Profile
+from Shelter.models import OwnerApplication, Files, Profile, Shelter
 
 
 def download_file(request, id):
@@ -92,22 +92,6 @@ def delete(request, id):
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
 
-# def edit(request, id):
-#     try:
-#         person = Owner.objects.get(id=id)
-#
-#         if request.method == "POST":
-#             person.name = request.POST.get("name")
-#             person.surname = request.POST.get("surname")
-#             person.email = request.POST.get("email")
-#             person.phoneNum = request.POST.get("phoneNum")
-#             person.sex = request.POST.get("sex")
-#             person.save()
-#             return HttpResponseRedirect("/owner/applications")
-#         else:
-#             return render(request, "edit.html", {"person": person})
-#     except Owner.DoesNotExist:
-#         return HttpResponseNotFound("<h2>Person not found</h2>")
 
 def applay(request, id):
     try:
@@ -121,6 +105,7 @@ def applay(request, id):
         profile.type = 'Owner'
         profile.sex = owner.sex
         profile.save()
+        Shelter.objects.create(title="", address="", description="", user=profile)
         return HttpResponseRedirect("/owner/applications")
     except OwnerApplication.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
