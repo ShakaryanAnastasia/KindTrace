@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
-{% block title %} Creation form {% endblock %}
-
 {% block content %}
     {% include "includes/navbar.html" %}
     <div class="feature" style="margin-top: 70px">
-
+        <h1>Заявки</h1>
         {% if apps %}
             {% for el in apps %}
-                <div class="alert alert-warning">
+                <div class="inline-group main-group">
+                <div class="column" id='reper'>
 
                     <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
                     <p> {{ el.email }}</p>
-                    <a href="applay/{{ el.id }}" class="btn">Принять</a>
-                    <a href="delete/{{ el.id }}" class="btn">Отклонить</a>
-
+                </div>
+                <div class="column-rest">
+                    <a href="applay/{{ el.id }}"  id='btk' class="btn"><i class="fas fa-check"></i></a>
+                    <br>
+                    <a href="delete/{{ el.id }}"  id='btk'class="btn"><i class="fas fa-times"></i></a>
+                </div>
                 </div>
             {% endfor %}
         {% else %}

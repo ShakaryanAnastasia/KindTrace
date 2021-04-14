@@ -1,13 +1,14 @@
 @font-face {
     font-family: 'Laptev_Brush';
-    src: url(../fonts/Laptev_Brush.otf )}
+    src: url(../fonts/Laptev_Brush.otf)
+}
 
-body{
+body {
     height: 130vh;
     margin: auto;
     width: 100%;
     overflow-x: hidden;
-    font-family:'Laptev_Brush', sans-serif;
+    font-family: 'Laptev_Brush', sans-serif;
     background: #ffffff;
     /*background: -webkit-linear-gradient(to bottom, #efb47d, #ffeeda);*/
     /*background: linear-gradient(to bottom, #ffe6b3, #db8d43);*/
@@ -17,37 +18,38 @@ body{
     position: relative;
 }
 
-.form-control{
-     height: 40px;
- background: #cdcdcd;
- border: none;
- border-radius: 20px;
- box-shadow: none;
- padding: 0 20px;
- font-size: 20px;
+.form-control {
+    height: 40px;
+    background: #cdcdcd;
+    border: none;
+    border-radius: 20px;
+    box-shadow: none;
+    padding: 0 20px;
+    font-size: 20px;
     width: 330px;
- color: #343333;
- transition: all 0.3s ease 0s;
+    color: #343333;
+    transition: all 0.3s ease 0s;
     opacity: 0.7;
 
 }
 
-.btn{
-     width: 200px;
-     background: #0a0909;
-     padding: 10px 20px;
-     border: none;
-     font-size: 14px;
-     font-weight: bold;
-     color: #7e7d7d;
-     border-radius: 20px;
-     text-transform: uppercase;
-     margin: 20px 0 30px 0;
-    font-family:'Laptev_Brush', sans-serif;
+.btn {
+    width: 200px;
+    background: #0a0909;
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: #7e7d7d;
+    border-radius: 20px;
+    text-transform: uppercase;
+    margin: 20px 0 30px 0;
+    font-family: 'Laptev_Brush', sans-serif;
     margin-right: 20px;
     opacity: 0.7;
 }
-.alert{
+
+.alert {
     float: left;
     clear: both;
     width: 400px;
@@ -59,44 +61,50 @@ body{
     width: 400px;
     height: 400px;
 }
-.nav-link{
+
+.nav-link {
 
     color: #ffffff;
 }
-.nav-link:hover{
+
+.nav-link:hover {
     color: #b5b5b5;
 }
+
 .navbar {
     position: fixed;
-	top: 0; left: 0;
+    top: 0;
+    left: 0;
 
-	transition: all .3s ease;
+    transition: all .3s ease;
 
     width: 100%;
     background: #0a0909;
     font-size: 25px;
     /*box-shadow: 5px 5px 5px rgb(235, 252, 251);*/
-     opacity: 0.7;
-
+    opacity: 0.7;
 
 
 }
-.navbar-brand {
-  font-size: 30px;}
-  .navbar div{
 
-  }
+.navbar-brand {
+    font-size: 30px;
+}
+
+.navbar div {
+
+}
+
 .social a {
-  font-size: 4em;
-  padding: 20px;}
+    font-size: 4em;
+    padding: 20px;
+}
 
 
 .column {
     padding-top: 50px;
     float: left;
     width: 50%;
-
-
 }
 
 /* Clear floats after the columns */
@@ -107,119 +115,162 @@ body{
 
 
 }
-.pic{
+
+.pic {
     box-shadow: 10px 10px 10px rgb(200, 195, 195);
 }
 
-.row{
+.row {
     margin-top: 50px;
 }
 
-.navbar-nav{
+.navbar-nav {
     margin-right: 100px;
 
 }
-.nav-item{
+
+.nav-item {
     margin-left: 20px;
 }
 
-.pow{
+.pow {
     margin-top: 100px;
 
 }
-.bpo{
+
+.bpo {
     width: 200px;
-     background: #0a0909;
-     padding: 10px 20px;
-     border: none;
-     font-size: 14px;
-     font-weight: bold;
-     color: #ffffff;
-     border-radius: 20px;
-     text-transform: uppercase;
-     margin: 20px 0 30px 0;
-    font-family:'Laptev_Brush', sans-serif;
+    background: #0a0909;
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 20px;
+    text-transform: uppercase;
+    margin: 20px 0 30px 0;
+    font-family: 'Laptev_Brush', sans-serif;
     margin-right: 20px;
     opacity: 0.7;
 }
-.reggi{
-    margin-top:100px;
+
+.reggi {
+    margin-top: 100px;
 }
 
-.appl{
-    margin-top:100px;
+.appl {
+    margin-top: 100px;
 
 }
-.log{
-    margin-top:100px;
+
+.log {
+    margin-top: 100px;
     padding-right: 100px;
 }
 
 
-.title{
+.title {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
 }
 
-.style{
+.style {
     background-color: #ffffff;
 }
 
-form.kom{
+form.kom {
     height: 100px;
-    display:inline;
+    display: inline;
 }
 
-.container{
-    margin-top:100px;
+.container {
+    margin-top: 100px;
     margin-left: 600px;
 }
 
-.form-comment{
-    height:100px;
-    width:330px;
+.form-comment {
+    height: 100px;
+    width: 330px;
 }
-.down{
+
+.down {
     margin-top: 50px;
     margin-left: 20px;
 }
 
 .navbar-nav > li {
-  display: inline-block;
-  position: relative;
+    display: inline-block;
+    position: relative;
 }
+
 .submenu {
 
-  background: #000000;
+    background: #000000;
 
-  position: absolute;
-  left: 0;
-  visibility: hidden;
-  opacity: 0.7;
-  z-index: 5;
-  width: 150px;
-  transform: perspective(600px) rotateX(-90deg);
-  transform-origin: 0% 0%;
-  transition: .6s ease-in-out;
+    position: absolute;
+    left: 0;
+    visibility: hidden;
+    opacity: 0.7;
+    z-index: 5;
+    width: 150px;
+    transform: perspective(600px) rotateX(-90deg);
+    transform-origin: 0% 0%;
+    transition: .6s ease-in-out;
 }
 
-.navbar-nav > li:hover .submenu{
-  visibility: visible;
-  opacity: 1;
-  transform: perspective(600px) rotateX(0deg);
+.navbar-nav > li:hover .submenu {
+    visibility: visible;
+    opacity: 1;
+    transform: perspective(600px) rotateX(0deg);
 }
 
-.scroll{
+.scroll {
 
     margin-top: 7px;
 }
-.scroll a{
+
+.scroll a {
     color: #ffffff;
 }
+
 .pet-img {
     height: auto;
     width: 10vw;
     align-items: center;
+}
+
+/*заявки на становление хозяином приюта*/
+#reper {
+    text-align: center;
+    width: 200px;
+}
+
+.column-rest {
+    text-align: right;
+    background-color: #f3f3f3;
+    width: 200px;
+}
+
+.fa-check {
+    color: #01f501;
+}
+
+.fa-times {
+    color: #f50101;
+}
+
+#btk {
+    width: 50px;
+    background: #f3f3f3;
+    margin-right: 20px;
+}
+
+.inline-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    background-color: #f3f3f3;
 }
