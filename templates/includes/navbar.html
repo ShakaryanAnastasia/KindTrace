@@ -39,13 +39,18 @@
                             <a href="/owner/applications" class="nav-link">Заявки</a>
                         </li>
                     {% endif %}
+                    {% if user.is_authenticated and user.profile.type == 'Owner' %}
+                        <li class="nav-item">
+                            <a href="/pet/applications" class="nav-link">Заявки</a>
+                        </li>
+                    {% endif %}
                     {% if user.is_authenticated %}
                         <li class="scroll ">
                             {% if user.profile.type == 'Owner' %}
                                 <a href="/owner/editprofile" class="down">Личный кабинет</a>
                             {% endif %}
                             {% if user.profile.type == 'Client' %}
-                                <a href="#" class="down">Личный кабинет</a>
+                                <a href="/client/editprofile" class="down">Личный кабинет</a>
                             {% endif %}
                             {% if user.profile.type == 'Moderator' %}
                                 <a href="#" class="down">Личный кабинет</a>

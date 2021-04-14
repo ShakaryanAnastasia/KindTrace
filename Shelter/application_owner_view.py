@@ -1,5 +1,6 @@
 import mimetypes
 import os
+import string, secrets
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -96,7 +97,8 @@ def delete(request, id):
 def applay(request, id):
     try:
         owner = OwnerApplication.objects.get(id=id)
-        user = User.objects.create_user(owner.email, owner.email, 'qwerty123')
+        password = password_generate()
+        user = User.objects.create_user(owner.email, owner.email, password)
         user.save()
         profile = Profile.objects.get(user=user)
         profile.first_name = owner.name
@@ -109,3 +111,14 @@ def applay(request, id):
         return HttpResponseRedirect("/owner/applications")
     except OwnerApplication.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
+
+def password_generate():
+    char_classes = (string.ascii_lowercase,
+                    string.ascii_uppercase,
+                    string.digits,
+                    string.punctuation)
+    size = lambda: secrets.choice(range(8, 12))
+    char = lambda: secrets.choice(secrets.choice(char_classes))
+    pw = lambda: ''.join([char() for _ in range(size())])
+    p=pw()
+    return p

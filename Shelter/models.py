@@ -110,7 +110,10 @@ class Pet(models.Model):
         ('grey', "серый"),
         ('brown', "коричневый"),
         ('striped', "полосатый"),
-        ('turtle', "черепаший"),
+        ('turtle', "черепаховый"),
+        ('tricolor', "трехцветный"),
+        ('spotted','пятнистый'),
+        ('blackwhite', "черно-белый")
     )
     color = models.CharField(max_length=11, verbose_name="Цвет", choices=COLOR_CHOICES)
 
@@ -199,3 +202,11 @@ class Image(models.Model):
     def __str__(self):
         return self.image.name
 
+class Order(models.Model):
+    pet = models.ForeignKey(Pet, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, blank=True, on_delete=models.CASCADE)
+    dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
+    datePickUp = models.DateField(null=True, verbose_name="Дата принятия", blank=True)
+
+    def __str__(self):
+        return " ".join([self.dateCreate.strftime("%Y-%m-%d")])

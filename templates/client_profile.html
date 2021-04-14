@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_filters %}
+
+{% block content %}
+    {% include "includes/navbar.html" %}
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="feature" style="margin-top: 100px">
+            <h1>Личные данные</h1>
+            <label for="validationTextarea" class="form-label">Имя</label>
+            <br>
+            <label>
+                <input type="text" name="first_name" class='form-control' value="{{ profile.first_name }}"/>
+            </label>
+            <br>
+            <label for="validationTextarea" class="form-label">Фамилия</label>
+            <br>
+            <label>
+                <input type="text" name="last_name" class='form-control' value="{{ profile.last_name }}"/>
+            </label>
+            <br>
+            <label for="validationTextarea" class="form-label">Номер телефона</label>
+            <br>
+            <label>
+                <input type="text" name="phoneNum" class='form-control' value="{{ profile.phoneNum }}"/>
+            </label>
+            <br>
+            <label for="validationTextarea" class="form-label">Пол</label>
+            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="sex" required>
+            {% for sex,f_sex in sexes %}
+                {% if profile.sex == sex %}
+                    <option selected value="{{ sex }}">{{ f_sex }}</option>
+                {% else %}
+                    <option value="{{ sex }}">{{ f_sex }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+            <input type="submit" class='btn' value="Сохранить">
+        </div>
+    </form>
+{% endblock %}

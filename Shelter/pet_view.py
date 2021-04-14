@@ -14,7 +14,8 @@ def petapp(request):
         apps = Pet.objects.filter(shelter=shelter)
         images = [Image.objects.filter(pet=app).first() for app in apps]
     else:
-        apps = Pet.objects.all()
+        pets = Pet.objects.all()
+        apps = [pet for pet in pets if pet.owner == None]
         images = [Image.objects.filter(pet=app).first() for app in apps]
     return render(request, 'pets.html', {'apps': zip(apps, images)})
 
@@ -148,3 +149,4 @@ def deleteimages_pet(request, id):
         return HttpResponseRedirect(f"/editpet/{id_pet}")
     except Pet.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
+

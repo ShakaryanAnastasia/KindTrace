@@ -1,4 +1,4 @@
-from Shelter import application_owner_view, pet_view, new_view, task_view, views
+from Shelter import application_owner_view, pet_view, new_view, task_view, views, application_pet_view
 from django.urls import path
 
 urlpatterns = [
@@ -26,5 +26,9 @@ urlpatterns = [
     path('edittask/<int:id>/', task_view.edittask, name='edittask'),
     path('deletetask/<int:id>/', task_view.deletetask),
     path('task/deleteimages/<int:id>/', task_view.deleteimages_task),
-    path('owner/editprofile', views.editprofile, name='editprofile'),
+    path('owner/editprofile', views.editprofileowner, name='editprofileowner'),
+    path('pet/applications', application_pet_view.app),
+    path('pet/applications/delete/<int:id>/', application_pet_view.deleteorder),
+    path('pet/applications/applay/<int:id>/', application_pet_view.applay),
+    path('client/editprofile', views.editprofileclient, name='editprofileclient'),
 ]

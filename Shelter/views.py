@@ -46,7 +46,7 @@ class PersonUpdateView(UpdateView):
     template_name = 'person_update_form.html'
 
 
-def editprofile(request):
+def editprofileowner(request):
     try:
         sexes = Profile.SEX_CHOICES
         profile = Profile.objects.get(user=request.user)
@@ -65,5 +65,22 @@ def editprofile(request):
         else:
             return render(request, "owner_profile.html",
                           {"profile": profile, "shelter": shelter, "sexes": sexes})
+    except Profile.DoesNotExist:
+        return HttpResponseNotFound("<h2>News not found</h2>")
+
+def editprofileclient(request):
+    try:
+        sexes = Profile.SEX_CHOICES
+        profile = Profile.objects.get(user=request.user)
+        if request.method == "POST":
+            profile.first_name = request.POST.get("first_name")
+            profile.last_name = request.POST.get("last_name")
+            profile.phoneNum = request.POST.get("phoneNum")
+            profile.sex = request.POST.get("sex")
+            profile.save()
+            return HttpResponseRedirect("/client/editprofile")
+        else:
+            return render(request, "client_profile.html",
+                          {"profile": profile, "sexes": sexes})
     except Profile.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
