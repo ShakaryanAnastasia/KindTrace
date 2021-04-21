@@ -28,7 +28,7 @@ urlpatterns = [
     path('task/deleteimages/<int:id>/', task_view.deleteimages_task),
     path('owner/editprofile', views.editprofileowner, name='editprofileowner'),
     path('pet/applications', application_pet_view.app),
-    path('pet/applications/delete/<int:id>/', application_pet_view.deleteorder),
+    path('pet/applications/reject/<int:id>/', application_pet_view.rejectorder),
     path('pet/applications/applay/<int:id>/', application_pet_view.applay),
     path('client/editprofile', views.editprofileclient, name='editprofileclient'),
 ]

@@ -209,6 +209,13 @@ class Order(models.Model):
     user = models.ForeignKey(Profile, blank=True, on_delete=models.CASCADE)
     dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
     datePickUp = models.DateField(null=True, verbose_name="Дата принятия", blank=True)
-
+    dateViewing = models.DateField(null=True, verbose_name="Дата росмотра животного", blank=True)
+    STATUS_CHOICES = (
+        ('sent', "отправлена"),
+        ('accepted', "принята"),
+        ('rejected', "отклонена"),
+        ('confirmed', "подтверждена"),
+    )
+    status = models.CharField(max_length=15, verbose_name="Статус", choices=STATUS_CHOICES, default="sent")
     def __str__(self):
         return " ".join([self.dateCreate.strftime("%Y-%m-%d")])

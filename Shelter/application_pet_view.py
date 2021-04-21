@@ -8,29 +8,38 @@ from Shelter.models import Order, Profile, Shelter, Pet
 
 def app(request):
     profile = Profile.objects.get(user=request.user)
-    shelter = Shelter.objects.get(user=profile)
-    pets = list(Pet.objects.filter(shelter=shelter))
-    orders = Order.objects.all()
-    apps = [order for order in orders if order.pet in pets]
+    if profile.type == 'Owner':
+        shelter = Shelter.objects.get(user=profile)
+        pets = list(Pet.objects.filter(shelter=shelter))
+        orders = Order.objects.all()
+        apps = [order for order in orders if order.pet in pets]
+    if profile.type == 'Client':
+        apps = Order.objects.filter(user=profile)
     return render(request, 'pet_applications.html', {'apps': apps})
 
 
-def deleteorder(request, id):
+def rejectorder(request, id):
     try:
-        remove = Order.objects.get(id=id)
-        remove.delete()
+        order = Order.objects.get(id=id)
+        # pet = Pet.objects.get(id=order.pet.id)
+        # pet.owner = order.user
+        # order.datePickUp = date.today().strftime("%Y-%m-%d")
+        # pet.save()
+        order.status = "rejected"
+        order.save()
         return HttpResponseRedirect("/pet/applications")
-    except Pet.DoesNotExist:
-        return HttpResponseNotFound("<h2>News not found</h2>")
+    except Order.DoesNotExist:
+        return HttpResponseNotFound("<h2>Person not found</h2>")
 
 
 def applay(request, id):
     try:
         order = Order.objects.get(id=id)
-        pet = Pet.objects.get(id=order.pet.id)
-        pet.owner = order.user
-        order.datePickUp = date.today().strftime("%Y-%m-%d")
-        pet.save()
+        # pet = Pet.objects.get(id=order.pet.id)
+        # pet.owner = order.user
+        # order.datePickUp = date.today().strftime("%Y-%m-%d")
+        # pet.save()
+        order.status = "accepted"
         order.save()
         return HttpResponseRedirect("/pet/applications")
     except Order.DoesNotExist:

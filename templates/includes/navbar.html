@@ -61,7 +61,14 @@
                                 <a href="#" class="down">Личный кабинет</a>
                             {% endif %}
                             <ul class="submenu">
+                                {% if user.profile.type == 'Client' %}
+                                    <li><a href="/pet/applications">Мои заявки</a></li>
+                                {% endif %}
+                                {% if user.profile.type == 'Client' %}
+                                    <li><a href="#">Мои питомцы</a></li>
+                                {% endif %}
                                 <li><a href="/logout">Выйти</a></li>
+
                             </ul>
                         </li>
                     {% endif %}

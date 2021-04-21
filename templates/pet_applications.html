@@ -4,24 +4,33 @@
 
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="feature" style="margin-top: 70px">
-
+    <div class="feature" style="margin-top: 80px">
         {% if apps %}
             {% for el in apps %}
-                <div class="alert alert-warning">
-                    Пользователь: {{ el.user }}
-                    <br>
-                    Питомец: {{ el.pet }}
-                    <br>
-                    {{ el.dateCreate }}
-                    <br>
-                    <a href="applications/applay/{{ el.id }}" class="btn">Принять</a>
-                    <a href="applications/delete/{{ el.id }}" class="btn">Отклонить</a>
+                <div class="inline-group main-group">
+                    <div class="column-application">
+                        Пользователь: {{ el.user }}
+                        <br>
+                        Питомец: {{ el.pet }}
+                        <br>
+                        {{ el.dateCreate }}
+                    </div>
+
+                    <div class="column-rest">
+                        {% if user.profile.type == 'Owner' %}
+                            <a href="applications/applay/{{ el.id }}" id='btk' class="btn"><i class="fas fa-check"></i></a>
+                            <br>
+                            <a href="applications/reject/{{ el.id }}" id='btk' class="btn"><i class="fas fa-times"></i></a>
+                        {% endif %}
+                        {% if user.profile.type == 'Client' %}
+                            {{ el.get_status_display }}
+                        {% endif %}
+                    </div>
 
                 </div>
             {% endfor %}
         {% else %}
-            <p>No apps</p>
+            <p>У вас еще нет заявок</p>
         {% endif %}
 
     </div>

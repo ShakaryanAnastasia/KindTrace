@@ -8,15 +8,13 @@
             {% for el in apps %}
                 <div class="inline-group main-group">
                     <div class="column" id='reper'>
-
                         <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
                         <p> {{ el.email }}</p>
                     </div>
                     <div class="column-rest">
                         <a href="applay/{{ el.id }}" id='btk' class="btn"><i class="fas fa-check"></i></a>
                         <br>
-                        {#                        <a href="delete/{{ el.id }}" id='btk' class="btn"><i class="fas fa-times"></i></a>#}
-                        <button type="button" id="btn_add" onclick="openModal(this)"
+                        <button type="button" onclick="openModal(this)" id='btk'
                                 value="{{ el.id }}" class="fas fa-times"></button>
                     </div>
                 </div>
@@ -49,11 +47,12 @@
     </div>
 
     <script>
-    function openModal(button){
-        var id = button.getAttribute("value");
-        $('#modal_id').val(id);
-        $('#modal').modal('show');
-    }
+        function openModal(button) {
+            var id = button.getAttribute("value");
+            $('#modal_id').val(id);
+            $('#modal').modal('show');
+        }
+
         $('#ok').click(function () {
             var id = $("#modal_id").val();
             var response = $("#response").val();
@@ -61,7 +60,7 @@
             console.log(response)
             $.ajax({
                 type: 'GET',
-                url: 'delete/'+id+'/'+response,
+                url: 'delete/' + id + '/' + response,
                 data: {},
                 dataType: 'json',
                 success: function () {
