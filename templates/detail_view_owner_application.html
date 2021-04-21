@@ -3,15 +3,18 @@
 {% block title %} {{ application.name }} {% endblock %}
 
 {% block content %}
+    {% include "includes/navbar.html" %}
     <div class="feature">
-        <h1>{{ application.name }}</h1>
-        <h1>{{ application.surname }}</h1>
-        <p>{{ application.email }}</p>
-        <p>{{ application.phoneNum }}</p>
-        <p>{{ application.get_sex_display }}</p>
+        <h1 style="margin-top: 70px">{{ application.name }} {{ application.surname }}</h1>
+        Электронная почта: <p>{{ application.email }}</p>
+        Номер телефона: <p>{{ application.phoneNum }}</p>
+        Пол: <p>{{ application.get_sex_display }}</p>
+        Название приюта: <p>{{ application.title_shelter }}</p>
+        Адрес приюта: <p>{{ application.address_shelter }}</p>
+        Описание приюта: <p>{{ application.description_shelter }}</p>
         {% for f in files %}
-            <p> <a href="/download/{{f.id}}" download>{{f.get_name}}</a></p>
+            <p><a href="/download/{{ f.id }}" download>{{ f.get_name }}</a></p>
         {% endfor %}
 
-</div>
+    </div>
 {% endblock %}

@@ -38,7 +38,7 @@ class ApplicationOwnerForm(ModelForm):
 
     class Meta:
         model = OwnerApplication
-        fields = ['name', 'surname', 'email', 'phoneNum', 'sex']
+        fields = ['name', 'surname', 'email', 'phoneNum', 'sex', 'title_shelter', 'address_shelter', 'description_shelter']
 
 
 class PetForm(ModelForm):

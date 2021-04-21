@@ -5,7 +5,7 @@ import string, secrets
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.db.models import FileField
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, Http404, FileResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, Http404, FileResponse, JsonResponse
 from django.shortcuts import redirect, render
 
 from KindHeart.settings import BASE_DIR
@@ -34,6 +34,9 @@ def create(request):
             application.email = form.cleaned_data['email']
             application.phoneNum = form.cleaned_data['phoneNum']
             application.sex = form.cleaned_data['sex']
+            application.title_shelter = form.cleaned_data['title_shelter']
+            application.address_shelter = form.cleaned_data['address_shelter']
+            application.description_shelter = form.cleaned_data['description_shelter']
             application.save()
             if files:
                 for f in files:
@@ -84,14 +87,14 @@ def read_application_owner(request, id):
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
 
-def delete(request, id):
+def delete(request, id, response):
     try:
         remove = OwnerApplication.objects.get(id=id)
         remove.delete()
-        return HttpResponseRedirect("/owner/applications")
-    except OwnerApplication.DoesNotExist:
-        return HttpResponseNotFound("<h2>Person not found</h2>")
+        return JsonResponse({})
 
+    except OwnerApplication.DoesNotExist:
+        return JsonResponse({"<h2>Person not found</h2>"})
 
 
 def applay(request, id):
@@ -107,10 +110,12 @@ def applay(request, id):
         profile.type = 'Owner'
         profile.sex = owner.sex
         profile.save()
-        Shelter.objects.create(title="", address="", description="", user=profile)
+        Shelter.objects.create(title=owner.title_shelter, address=owner.address_shelter,
+                               description=owner.description_shelter, user=profile)
         return HttpResponseRedirect("/owner/applications")
     except OwnerApplication.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
+
 
 def password_generate():
     char_classes = (string.ascii_lowercase,
@@ -120,5 +125,5 @@ def password_generate():
     size = lambda: secrets.choice(range(8, 12))
     char = lambda: secrets.choice(secrets.choice(char_classes))
     pw = lambda: ''.join([char() for _ in range(size())])
-    p=pw()
+    p = pw()
     return p

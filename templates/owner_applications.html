@@ -7,16 +7,18 @@
         {% if apps %}
             {% for el in apps %}
                 <div class="inline-group main-group">
-                <div class="column" id='reper'>
+                    <div class="column" id='reper'>
 
-                    <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
-                    <p> {{ el.email }}</p>
-                </div>
-                <div class="column-rest">
-                    <a href="applay/{{ el.id }}"  id='btk' class="btn"><i class="fas fa-check"></i></a>
-                    <br>
-                    <a href="delete/{{ el.id }}"  id='btk'class="btn"><i class="fas fa-times"></i></a>
-                </div>
+                        <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
+                        <p> {{ el.email }}</p>
+                    </div>
+                    <div class="column-rest">
+                        <a href="applay/{{ el.id }}" id='btk' class="btn"><i class="fas fa-check"></i></a>
+                        <br>
+                        {#                        <a href="delete/{{ el.id }}" id='btk' class="btn"><i class="fas fa-times"></i></a>#}
+                        <button type="button" id="btn_add" onclick="openModal(this)"
+                                value="{{ el.id }}" class="fas fa-times"></button>
+                    </div>
                 </div>
             {% endfor %}
         {% else %}
@@ -24,4 +26,51 @@
         {% endif %}
 
     </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Причина отклонения</h5>
+                </div>
+                <div class="modal-body">
+                    <input id="modal_id" value="" hidden>
+                    <p>Введите причину отклонения, чтобы отклонить заявку</p>
+                    <label>
+                        <textarea class="form-control" id="response" required></textarea>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="ok">Send message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openModal(button){
+        var id = button.getAttribute("value");
+        $('#modal_id').val(id);
+        $('#modal').modal('show');
+    }
+        $('#ok').click(function () {
+            var id = $("#modal_id").val();
+            var response = $("#response").val();
+            console.log(id)
+            console.log(response)
+            $.ajax({
+                type: 'GET',
+                url: 'delete/'+id+'/'+response,
+                data: {},
+                dataType: 'json',
+                success: function () {
+                    document.location.reload(true);
+                },
+                error: function (result) {
+                    alert(result);
+                }
+            });
+        });
+    </script>
 {% endblock %}
