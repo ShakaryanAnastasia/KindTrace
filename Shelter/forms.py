@@ -86,3 +86,9 @@ class TaskForm(ModelForm):
         fields = ['title', 'body', 'dateExpiration']
 
 
+class PasswordChangeForm(ModelForm):
+    password1 = forms.CharField(max_length=15, widget=forms.PasswordInput(), label="Пароль")
+    password2 = forms.CharField(max_length=15, widget=forms.PasswordInput(), label="Повторите пароль")
+    class Meta:
+        model = User
+        fields = ('password1', 'password2')

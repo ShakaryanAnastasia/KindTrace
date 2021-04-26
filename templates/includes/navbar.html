@@ -58,7 +58,7 @@
                                 <a href="/client/editprofile" class="down">Личный кабинет</a>
                             {% endif %}
                             {% if user.profile.type == 'Moderator' %}
-                                <a href="#" class="down">Личный кабинет</a>
+                                <a href="/admin/editprofile" class="down">Личный кабинет</a>
                             {% endif %}
                             <ul class="submenu">
                                 {% if user.profile.type == 'Client' %}

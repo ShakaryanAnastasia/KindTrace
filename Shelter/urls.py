@@ -31,4 +31,6 @@ urlpatterns = [
     path('pet/applications/reject/<int:id>/', application_pet_view.rejectorder),
     path('pet/applications/applay/<int:id>/', application_pet_view.applay),
     path('client/editprofile', views.editprofileclient, name='editprofileclient'),
+    path('admin/editprofile', views.editprofileadmin, name='editprofileadmin'),
+
 ]
