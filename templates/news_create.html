@@ -5,21 +5,18 @@
 {% block content %}
     {% include "includes/navbar.html" %}
 
-    <div class="log ">
-        <h1>Добавить новость</h1>
-        <form enctype="multipart/form-data" method="post">
-            {% csrf_token %}
+    <h1>Добавить новость</h1>
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
 
-            {{ form.title|as_crispy_field }}
+        {{ form.title|as_crispy_field }}
 
-            {{ form.anons|as_crispy_field }}
+        {{ form.anons|as_crispy_field }}
 
-            {{ form.body|as_crispy_field }}
+        {{ form.body|as_crispy_field }}
 
-            <span>{{ error }} </span>
-            {{ form.images|as_crispy_field }}
-            <button class="btn" type="submit">Ввод</button>
-
-        </form>
-    </div>
+        <span>{{ error }} </span>
+        {{ form.images|as_crispy_field }}
+        <button class="btn" type="submit">Ввод</button>
+    </form>
 {% endblock %}

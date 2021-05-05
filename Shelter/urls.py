@@ -8,7 +8,7 @@ urlpatterns = [
     path('owner/delete/<int:id>/<str:response>', application_owner_view.delete),
     path('owner/applay/<int:id>/', application_owner_view.applay),
     path('addpet', pet_view.addpet, name='addpet'),
-    path('pets', pet_view.petapp, name='petapp'),
+    path('pets/<int:num>/', pet_view.petapp, name='petapp'),
     path('<int:id>/', pet_view.post_detail, name='post_detail'),
     path('download/<int:id>/', application_owner_view.download_file),
     path('news', new_view.news, name='news'),
@@ -32,5 +32,6 @@ urlpatterns = [
     path('pet/applications/applay/<int:id>/', application_pet_view.applay),
     path('client/editprofile', views.editprofileclient, name='editprofileclient'),
     path('admin/editprofile', views.editprofileadmin, name='editprofileadmin'),
+    path('client/pets', pet_view.list_pet, name='client_pets'),
 
 ]

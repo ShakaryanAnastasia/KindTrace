@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/card.css' %}>
+{% endblock %}
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="feature" style="margin-top: 70px">
         <h1>Заявки</h1>
         {% if apps %}
             {% for el in apps %}
                 <div class="inline-group main-group">
-                    <div class="column" id='reper'>
+                    <div id='reper'>
                         <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
                         <p> {{ el.email }}</p>
                     </div>
@@ -22,8 +25,6 @@
         {% else %}
             <p>No apps</p>
         {% endif %}
-
-    </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">

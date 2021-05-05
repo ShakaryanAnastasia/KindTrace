@@ -5,7 +5,7 @@
 {% block content %}
 
     {% include "includes/navbar.html" %}
-    <div class="log">
+
         <h1> Авторизоваться </h1>
         <form method="post">
 
@@ -15,11 +15,11 @@
 
             {{ form|crispy }}
 
-            <button type="submit" class="bpo ">Войти</button>
+            <button type="submit" class="btn">Войти</button>
         </form>
         <form>
-            <button href="signup/" type="submit" class="btn "><a href="/signup/" class="nav-link">Зарегистрироваться</a>
+            <button href="signup/" type="submit" class="btn"><a href="/signup/" class="nav-link">Зарегистрироваться</a>
             </button>
         </form>
-    </div>
+
 {% endblock %}

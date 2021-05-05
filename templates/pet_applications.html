@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
-{% block title %} Creation form {% endblock %}
-
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/card.css' %}>
+{% endblock %}
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="feature" style="margin-top: 80px">
         {% if apps %}
             {% for el in apps %}
                 <div class="inline-group main-group">
-                    <div class="column-application">
+                    <div class="reper">
                         Пользователь: {{ el.user }}
                         <br>
                         Питомец: {{ el.pet }}
@@ -32,6 +33,4 @@
         {% else %}
             <p>У вас еще нет заявок</p>
         {% endif %}
-
-    </div>
 {% endblock %}

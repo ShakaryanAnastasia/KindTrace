@@ -4,7 +4,6 @@
 
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="container">
         <h1>{{ task.title }}</h1><br>
         Дата содания: {{ task.dateCreate }}<br>
         Дата выполнения: {{ task.dateExpiration }}<br>
@@ -49,7 +48,6 @@
                 <p><input type="button" id="btn_add" class="btn" value="Добавить"></p>
             </form>
         {% endif %}
-    </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/card.css' %}>
+{% endblock %}
+{% load crispy_forms_filters %}
+{% block content %}
+    {% include "includes/navbar.html" %}
+    {% for el,image in apps %}
+        <div class="inline-group main-group">
+            <div id='reper'>
+                <h2>
+                    <a href="{{ el.get_url }}">
+                        {{ el.name }}
+                    </a>
+                </h2>
+                <p class="date">
+                    Возраст: {{ el.age }} год
+                </p>
+                <p class="date">
+                    Пол: {{ el.get_sex_display }}
+                </p>
+            </div>
+            <div id='reper'>
+                {% if not image == null %}
+                    <img src='/{{ image }}' class="pet-img" alt="pet img" style="padding-bottom: 50px ">
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

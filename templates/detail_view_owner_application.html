@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
-{% block title %} {{ application.name }} {% endblock %}
-
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="feature">
-        <h1 style="margin-top: 70px">{{ application.name }} {{ application.surname }}</h1>
+        <h1>{{ application.name }} {{ application.surname }}</h1>
         Электронная почта: <p>{{ application.email }}</p>
         Номер телефона: <p>{{ application.phoneNum }}</p>
         Пол: <p>{{ application.get_sex_display }}</p>
@@ -15,6 +12,4 @@
         {% for f in files %}
             <p><a href="/download/{{ f.id }}" download>{{ f.get_name }}</a></p>
         {% endfor %}
-
-    </div>
 {% endblock %}

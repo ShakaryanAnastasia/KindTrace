@@ -5,72 +5,75 @@
 
 {% block content %}
     {% include "includes/navbar.html" %}
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        <div class="feature" style="margin-top: 100px">
-            <br><br>
-
+    <div class="main">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <label for="validationTextarea" class="form-label">Имя питомца</label>
+            <br>
             <label>
                 <input type="text" name="name" class='form-control' value="{{ pet.name }}"/>
             </label>
-
-            <br><br>
-
+            <br>
+            <label for="validationTextarea" class="form-label">Возраст питомца</label>
+            <br>
             <label>
                 <input type="text" name="age" class='form-control' value="{{ pet.age }}"/>
             </label>
-
-            <br><br>
+            <br>
+            <label for="validationTextarea" class="form-label">Пол питомца</label>
             <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="sex" required>
-                {% for sex,f_sex in sexes %}
-                    {% if pet.sex == sex %}
-                        <option selected value="{{ sex }}">{{ f_sex }}</option>
-                    {% else %}
-                        <option value="{{ sex }}">{{ f_sex }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-
-             <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="type" required>
-                {% for type,f_type in types %}
-                    {% if pet.type == type %}
-                        <option selected value="{{ type }}">{{ f_type }}</option>
-                    {% else %}
-                        <option value="{{ type }}">{{ f_type }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-
+            {% for sex,f_sex in sexes %}
+                {% if pet.sex == sex %}
+                    <option selected value="{{ sex }}">{{ f_sex }}</option>
+                {% else %}
+                    <option value="{{ sex }}">{{ f_sex }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+            <label for="validationTextarea" class="form-label">Тип питомца</label>
+            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="type" required>
+            {% for type,f_type in types %}
+                {% if pet.type == type %}
+                    <option selected value="{{ type }}">{{ f_type }}</option>
+                {% else %}
+                    <option value="{{ type }}">{{ f_type }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+            <label for="validationTextarea" class="form-label">Цвет питомца</label>
             <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="color" required>
-                {% for color,f_color in colors %}
-                    {% if pet.color == color %}
-                        <option selected value="{{ color }}">{{ f_color }}</option>
-                    {% else %}
-                        <option value="{{ color }}">{{ f_color }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-
+            {% for color,f_color in colors %}
+                {% if pet.color == color %}
+                    <option selected value="{{ color }}">{{ f_color }}</option>
+                {% else %}
+                    <option value="{{ color }}">{{ f_color }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+            <label for="validationTextarea" class="form-label">Тип шерсти питомца</label>
             <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="wool" required>
-                {% for wool,f_wool in wools %}
-                    {% if pet.wool == wool %}
-                        <option selected value="{{ wool }}">{{ f_wool }}</option>
-                    {% else %}
-                        <option value="{{ wool }}">{{ f_wool }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-
-            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="character" required>
-                {% for character,f_character in characters %}
-                    {% if pet.character == character %}
-                        <option selected value="{{ character }}">{{ f_character }}</option>
-                    {% else %}
-                        <option value="{{ character }}">{{ f_character }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <br><br>
+            {% for wool,f_wool in wools %}
+                {% if pet.wool == wool %}
+                    <option selected value="{{ wool }}">{{ f_wool }}</option>
+                {% else %}
+                    <option value="{{ wool }}">{{ f_wool }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+            <label for="validationTextarea" class="form-label">Характер питомца</label>
+            <label for="floatingSelect"></label><select class="form-select" id="floatingSelect" name="character"
+                                                        required>
+            {% for character,f_character in characters %}
+                {% if pet.character == character %}
+                    <option selected value="{{ character }}">{{ f_character }}</option>
+                {% else %}
+                    <option value="{{ character }}">{{ f_character }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+            <br>
+            <label for="validationTextarea" class="form-label">Описание питомца</label>
+            <br>
             <label>
                 <textarea class="form-control" name="description" required>{{ pet.description }}</textarea>
             </label>
@@ -80,12 +83,18 @@
                 {% for image in images %}
                     {% if image %}
                         <img src='/{{ image }}' class="pet-img" alt="pet img">
-                        <a href="/pet/deleteimages/{{ image.id }}" class="btn">Удалить</a>
-                        <br><br>
+                        <a href="/pet/deleteimages/{{ image.id }}"><i class="fas fa-trash-alt"></i></a>
+                        <br>
                     {% endif %}
                 {% endfor %}
-                <br><br>
-                <input type="submit" class='btn' value="Сохранить">
-        </div>
-    </form>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="check" id="check" name="check">
+                <label class="form-check-label" for="check">
+                    Отдать питомца
+                </label>
+            </div>
+            <br>
+            <input type="submit" class='btn' value="Сохранить">
+        </form>
+    </div>
 {% endblock %}

@@ -1,31 +1,52 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% block title %} Creation form {% endblock %}
-
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/pets.css' %}>
+{% endblock %}
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="container">
-        <h1>{{ post.name }}</h1><br>
-        <p class="date">
-            Возраст: {{ post.age }} год <br>
-            Пол: {{ post.get_sex_display }}<br>
-            Цвет: {{ post.get_color_display }}<br>
-            Тип шерсти: {{ post.get_wool_display }}<br>
-            Характер: {{ post.get_character_display }}<br>
-            Описание: {{ post.description }}<br>
-            Приют: {{ post.shelter }}<br>
-        </p>
-        <div class="style">
-        {% for image in images %}
-            {% if image %}
-                <img src='/{{ image }}' class="pet-img" alt="pet img">
-            {% endif %}
-        {% endfor %}
+    <div class="main">
+        <h1>{{ post.name }}</h1>
+        <div class="row row-cols-auto justify-content-md-center">
+            {% for image in images %}
+                <div class="col-auto">
+                    <div class="card h-100 w-70" style="margin-top: 15px">
+                        {% if not image == null %}
+                            <img src='/{{ image }}' class="pet-img" alt="pet img">
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
+        <br>
+        Возраст: {{ post.age }} <br>
+        Пол: {{ post.get_sex_display }}<br>
+        Цвет: {{ post.get_color_display }}<br>
+        Тип шерсти: {{ post.get_wool_display }}<br>
+        Характер: {{ post.get_character_display }}<br>
+        Описание: {{ post.description }}<br>
+        Приют: {{ post.shelter }}<br>
+        <hr>
         {{ post.body|linebreaks }}<br>
+        {% if new_comment %}
+            <h2>Ваш комментарий добавлен</h2>
+        {% else %}
+            <h2>Добавьте свой комментарий</h2>
+            <form action="." method="post">
+                {{ comment_form.title|as_crispy_field }}
+                <div class="form-comment">
+                    {{ comment_form.body|as_crispy_field }}
+                </div>
+                <br>
+                {% csrf_token %}
+                <p><input type="button" id="btn_add" class="btn" style="width: 120px" value="Добавить"></p>
+            </form>
+        {% endif %}
         {% with comments.count as total_comments %}
             <h2>
-                {{ total_comments }} комментариев
+                Всего: {{ total_comments }} комментариев
             </h2>
         {% endwith %}
         {% for comment in comments %}
@@ -40,28 +61,13 @@
         {% empty %}
             <p>Комментариев еще нет</p>
         {% endfor %}
-        {% if new_comment %}
-            <h2>Ваш комментарий добавлен</h2>
-        {% else %}
-            <h2>Добавьте свой комментарий</h2>
-            <form action="." method="post">
-                {{ comment_form.title|as_crispy_field }}
-                <div class="form-comment">
-                    {{ comment_form.body|as_crispy_field }}
-                </div>
-                <br><br>
-                {% csrf_token %}
-                <p><input type="button" id="btn_add" class="btn" value="Добавить"></p>
-            </form>
-        {% endif %}
-    </div>
 
+    </div>
     <div class="modal" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Авторизуйтесь в системе</h5>
-                   
                 </div>
                 <div class="modal-body">
                     <p>Для того, чтобы оставить комментарий, авторизуйтесь в системе</p>

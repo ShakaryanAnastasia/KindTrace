@@ -1,0 +1,26 @@
+#reper {
+    text-align: center;
+    width: 200px;
+}
+
+.column-rest {
+    text-align: right;
+    background-color: #f3f3f3;
+}
+
+.fa-check {
+    color: #01f501;
+}
+
+.fa-times {
+    color: #f50101;
+}
+
+.inline-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    background-color: #f3f3f3;
+    text-align: center;
+}

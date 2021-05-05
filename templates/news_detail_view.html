@@ -4,7 +4,6 @@
 
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="container">
         <h1>{{ new.title }}</h1><br>
         {% for image in images %}
             {% if image %}
@@ -23,10 +22,7 @@
                 <p class="info">
                     {{ comment.user }}<br>
                     Тема: {{ comment.title }}
-
-
                 </p>
-
                 {{ comment.body|linebreaks }}
                 {{ comment.dateCreate }} <br>
             </div>
@@ -47,7 +43,6 @@
                  <p><input type="button" id="btn_add" class="btn" value="Добавить"></p>
             </form>
         {% endif %}
-    </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">

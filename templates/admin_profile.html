@@ -6,7 +6,6 @@
     {% include "includes/navbar.html" %}
     <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        <div class="feature" style="margin-top: 100px">
             <form method="post">
                 <h1>Смена пароля</h1>
                 <div>
@@ -16,6 +15,5 @@
                 <br>
                 <input type="submit" class='btn' value="Сохранить">
             </form>
-        </div>
     </form>
 {% endblock %}

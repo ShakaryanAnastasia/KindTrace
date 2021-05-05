@@ -6,38 +6,34 @@
     {% include "includes/navbar.html" %}
     <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        <div class="pow">
+        <label for="validationTextarea" class="form-label">Название новости</label>
+        <br>
+        <label>
+            <input type="text" name="title" class='form-control' value="{{ news.title }}"/>
+        </label>
+        <br>
+        <label for="validationTextarea" class="form-label">Анонс новости</label>
+        <br>
+        <label>
+            <input type="text" name="anons" class='form-control' value="{{ news.anons }}"/>
+        </label>
+        <br>
+        <label for="validationTextarea" class="form-label">Содержание новости</label>
+        <br>
+        <label>
+            <textarea class="form-control" name="body" required>{{ news.body }}</textarea>
+        </label>
+        <br><br>
+        <p><input type="file" name="images" multiple accept="image/*">
             <br><br>
-            <label for="validationTextarea" class="form-label">Название новости</label>
-            <br><br>
-            <label>
-                <input type="text" name="title" class='form-control' value="{{ news.title }}"/>
-            </label>
-            <br><br>
-            <label for="validationTextarea" class="form-label">Анонс новости</label>
-            <br><br>
-            <label>
-                <input type="text" name="anons" class='form-control' value="{{ news.anons }}"/>
-            </label>
-            <br><br>
-            <label for="validationTextarea" class="form-label">Содержание новости</label>
-            <br><br>
-            <label>
-                <textarea class="form-control" name="body" required>{{ news.body }}</textarea>
-            </label>
-
-            <br><br>
-            <p><input type="file" name="images" multiple accept="image/*">
-                <br><br>
-                {% for image in images %}
-                    {% if image %}
-                        <img src='/{{ image }}' class="pet-img" alt="pet img">
-                        <a href="/news/deleteimages/{{ image.id }}" class="btn">Удалить</a>
-                        <br><br>
-                    {% endif %}
-                {% endfor %}
-                <br><br>
-                <input type="submit" class='btn' value="Сохранить">
-        </div>
+            {% for image in images %}
+                {% if image %}
+                    <img src='/{{ image }}' class="pet-img" alt="pet img">
+                    <a href="/news/deleteimages/{{ image.id }}" class="btn">Удалить</a>
+                    <br>
+                {% endif %}
+            {% endfor %}
+            <br>
+            <input type="submit" class='btn' value="Сохранить">
     </form>
 {% endblock %}

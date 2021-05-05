@@ -1,41 +1,57 @@
 {% extends 'base.html' %}
-
 {% load crispy_forms_filters %}
-{% block title %} Creation form {% endblock %}
-
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/pets.css' %}>
+{% endblock %}
 {% block content %}
     {% include "includes/navbar.html" %}
-
-    <div class="pow">
+    <div class="main">
         {% if user.is_authenticated and user.profile.type == 'Owner' %}
-            <button href="" type="submit" class="btn "
-                    style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;"><a
-                    href="addpet" class="nav-link">Добавить</a></button>
-        {% endif %}
-        {% for el,image in apps %}
-            <div class="column">
-                <div class="style">
-                    <h2>
-                        <a href="{{ el.get_url }}">
-                            {{ el.name }}
-                        </a>
-                    </h2>
-                    <p class="date">
-                        Возраст: {{ el.age }} год
-                    </p>
-                    <p class="date">
-                        Пол: {{ el.get_sex_display }}
-                    </p>
-                    {% if not image == null %}
-                        <img src='{{ image }}' class="pet-img" alt="pet img">
-                    {% endif %}
-                </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn" style="background-color: #0ba434"><a href="addpet" class="nav-link">Добавить</a>
+                </button>
             </div>
-            {% if user.is_authenticated and user.profile.type == 'Owner' %}
-                <a href="editpet/{{ el.id }}" class="btn">Редактировать</a><br>
-                <a href="deletepet/{{ el.id }}" class="btn">Удалить</a>
-            {% endif %}
-        {% endfor %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-lg justify-content-center">
+                    {% if num == 1 %}
+                        <li class="page-item active"><a class="page-link" href="/pets/{{ 1 }}">Не пристроенные</a></li>
+                        <li class="page-item"><a class="page-link" href="/pets/{{ 2 }}">Пристроенные</a></li>
+                    {% endif %}
+                    {% if num == 2 %}
+                        <li class="page-item"><a class="page-link" href="/pets/{{ 1 }}">Не пристроенные</a></li>
+                        <li class="page-item active"><a class="page-link" href="/pets/{{ 2 }}">Пристроенные</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+        <div class="container">
+            <div class="row row-cols-auto justify-content-md-center">
+                {% for el,image in apps %}
+                    <div class="col-auto">
+                        <div class="card h-100 w-70">
+                            {% if not image == null %}
+                                <img src='/{{ image }}' class="pet-img" alt="pet img">
+                            {% endif %}
+                            <div class="card-body">
+                                <h3 class="text-center">
+                                    <a href="{{ el.get_url }}">
+                                        {{ el.name }}
+                                    </a>
+                                </h3>
+                                Возраст: {{ el.age }}
+                                <br>
+                                Пол: {{ el.get_sex_display }}
+                                <br>
+                                {% if user.is_authenticated and user.profile.type == 'Owner' %}
+                                    <a href="/editpet/{{ el.id }}"><i class="fas fa-edit"></i></a>
+                                    <a href="/deletepet/{{ el.id }}"><i class="fas fa-trash-alt"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-
 {% endblock %}

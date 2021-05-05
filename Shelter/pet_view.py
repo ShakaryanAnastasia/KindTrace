@@ -7,17 +7,32 @@ from Shelter.forms import CommentForm, PetForm
 from Shelter.models import Pet, Profile, Shelter, Image
 
 
-def petapp(request):
+def petapp(request, num):
     user = request.user
     if user.is_authenticated and user.profile.type == 'Owner':
-        shelter = Shelter.objects.get(user=user.profile)
-        apps = Pet.objects.filter(shelter=shelter)
-        images = [Image.objects.filter(pet=app).first() for app in apps]
+        if num == 1:
+            shelter = Shelter.objects.get(user=user.profile)
+            pets = Pet.objects.filter(shelter=shelter)
+            apps = [pet for pet in pets if pet.owner_id == None]
+            images = [Image.objects.filter(pet=app).first() for app in apps]
+        if num == 2:
+            shelter = Shelter.objects.get(user=user.profile)
+            pets = Pet.objects.filter(shelter=shelter)
+            apps = [pet for pet in pets if pet.owner_id != None]
+            images = [Image.objects.filter(pet=app).first() for app in apps]
     else:
         pets = Pet.objects.all()
         apps = [pet for pet in pets if pet.owner == None]
         images = [Image.objects.filter(pet=app).first() for app in apps]
-    return render(request, 'pets.html', {'apps': zip(apps, images)})
+    return render(request, 'pets.html', {'apps': zip(apps, images), 'num': num})
+
+
+def list_pet(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    pets = Pet.objects.filter(owner=profile)
+    images = [Image.objects.filter(pet=pet).first() for pet in pets]
+    return render(request, 'clients_pets.html', {'apps': zip(pets, images)})
 
 
 def post_detail(request, id):
@@ -116,6 +131,8 @@ def editpet(request, id):
             pet.wool = request.POST.get("wool")
             pet.character = request.POST.get("character")
             pet.description = request.POST.get("description")
+            if request.POST.get("check") == 'check':
+                pet.owner = Profile.objects.get(user=request.user)
             pet.save()
             if images:
                 for i in images:
@@ -123,7 +140,7 @@ def editpet(request, id):
                     if file_path:
                         fl = Image(pet=pet, image=file_path)
                         fl.save()
-            return HttpResponseRedirect("/pets")
+            return HttpResponseRedirect("/pets/1")
         else:
             return render(request, "pet_edit.html",
                           {"pet": pet, "images": images, "sexes": sexes, "types": types, "colors": colors,
@@ -149,4 +166,3 @@ def deleteimages_pet(request, id):
         return HttpResponseRedirect(f"/editpet/{id_pet}")
     except Pet.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
-

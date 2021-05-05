@@ -7,22 +7,12 @@
     {% include "includes/navbar.html" %}
     <div class="reggi">
         <form method="post">
-
-            <div class="reg">
-                <h1 class="mt-2">Регистрация</h1>
-            </div>
+            <h1 class="mt-2">Регистрация</h1>
             <hr class="mt-0 mb-4">
-
             {% csrf_token %}
-
-            <div>
-                <p> {{ form|crispy }}</p>
-            </div>
-
+            <p> {{ form|crispy }}</p>
             <span>{{ error }} </span>
-
-            <button type="submit" class="bpo">Регистрация</button>
-
+            <button type="submit" class="btn">Регистрация</button>
         </form>
     </div>
 {% endblock %}

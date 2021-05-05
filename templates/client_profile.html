@@ -6,7 +6,6 @@
     {% include "includes/navbar.html" %}
     <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        <div class="feature" style="margin-top: 100px">
             <h1>Личные данные</h1>
             <label for="validationTextarea" class="form-label">Имя</label>
             <br>
@@ -37,6 +36,5 @@
             {% endfor %}
         </select>
             <input type="submit" class='btn' value="Сохранить">
-        </div>
     </form>
 {% endblock %}
