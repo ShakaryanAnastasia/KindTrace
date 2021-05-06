@@ -6,6 +6,7 @@
 {% endblock %}
 {% block content %}
     {% include "includes/navbar.html" %}
+    <div class="main">
         <h1>Заявки</h1>
         {% if apps %}
             {% for el in apps %}
@@ -25,7 +26,7 @@
         {% else %}
             <p>No apps</p>
         {% endif %}
-
+    </div>
     <div class="modal" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

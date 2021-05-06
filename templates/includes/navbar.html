@@ -46,7 +46,7 @@
                     {% endif %}
                     {% if user.is_authenticated and user.profile.type == 'Owner' %}
                         <li class="nav-item">
-                            <a href="/pet/applications" class="nav-link">Заявки</a>
+                            <a href="/pet/applications/{{ 1 }}" class="nav-link">Заявки</a>
                         </li>
                     {% endif %}
                     {% if user.is_authenticated %}

@@ -6,31 +6,74 @@
 {% endblock %}
 {% block content %}
     {% include "includes/navbar.html" %}
-        {% if apps %}
+    <div class="main">
+        {% if user.profile.type == 'Owner' %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-lg justify-content-center">
+                    {% if num == 1 %}
+                        <li class="page-item active"><a class="page-link" href="/pet/applications/{{ 1 }}">Не
+                            обработанные</a></li>
+                        <li class="page-item"><a class="page-link" href="/pet/applications/{{ 2 }}">Принятые</a>
+                        </li>
+                    {% endif %}
+                    {% if num == 2 %}
+                        <li class="page-item"><a class="page-link" href="/pet/applications/{{ 1 }}">Не
+                            обработанные</a></li>
+                        <li class="page-item active"><a class="page-link"
+                                                        href="/pet/applications/{{ 2 }}">Принятые</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
             {% for el in apps %}
                 <div class="inline-group main-group">
-                    <div class="reper">
+                    <div class="reper" style="text-align: left; width: 350px; padding-left: 40px">
                         Пользователь: {{ el.user }}
                         <br>
                         Питомец: {{ el.pet }}
                         <br>
-                        {{ el.dateCreate }}
+                        Готов посмотреть: {{ el.dateViewing }}
+                        <br>
+                        Заявка подана: {{ el.dateCreate }}
                     </div>
-
-                    <div class="column-rest">
-                        {% if user.profile.type == 'Owner' %}
-                            <a href="applications/applay/{{ el.id }}" id='btk' class="btn"><i class="fas fa-check"></i></a>
-                            <br>
-                            <a href="applications/reject/{{ el.id }}" id='btk' class="btn"><i class="fas fa-times"></i></a>
-                        {% endif %}
-                        {% if user.profile.type == 'Client' %}
-                            {{ el.get_status_display }}
-                        {% endif %}
-                    </div>
+                    {% if num == 2 %}
+                        <div class="column-rest">
+                            <buttons href="/pet/applications/confirm/{{ el.id }}" data-bs-toggle="tooltip"
+                                     data-bs-placement="right" id='btk' title data-bs-original-title="Отдать питомца"><i
+                                    class="fas fa-check-circle"></i></buttons>
+                        </div>
+                    {% endif %}
+                    {% if num == 1 %}
+                        <div class="column-rest">
+                            {% if user.profile.type == 'Owner' %}
+                                <a href="/pet/applications/applay/{{ el.id }}" data-bs-toggle="tooltip"
+                                   data-bs-placement="right" id='btk' class="btn" title
+                                   data-bs-original-title="Принять заявку"><i
+                                        class="fas fa-check"></i></a>
+                                <br>
+                                <a href="/pet/applications/reject/{{ el.id }}" data-bs-toggle="tooltip"
+                                   data-bs-placement="right" id='btk' class="btn" title
+                                   data-bs-original-title="Отклонить заявку"><i
+                                        class="fas fa-times"></i></a>
+                            {% endif %}
+                            {% if user.profile.type == 'Client' %}
+                                {{ el.get_status_display }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
 
                 </div>
             {% endfor %}
         {% else %}
             <p>У вас еще нет заявок</p>
         {% endif %}
+    </div>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 {% endblock %}
