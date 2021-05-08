@@ -37,6 +37,7 @@ def create(request):
             application.title_shelter = form.cleaned_data['title_shelter']
             application.address_shelter = form.cleaned_data['address_shelter']
             application.description_shelter = form.cleaned_data['description_shelter']
+            application.status = 'sent'
             application.save()
             if files:
                 for f in files:
@@ -100,6 +101,8 @@ def delete(request, id, response):
 def applay(request, id):
     try:
         owner = OwnerApplication.objects.get(id=id)
+        owner.status = 'accepted'
+        owner.save()
         password = password_generate()
         user = User.objects.create_user(owner.email, owner.email, password)
         user.save()

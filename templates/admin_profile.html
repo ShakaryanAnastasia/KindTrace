@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-
 {% load crispy_forms_filters %}
-
 {% block content %}
     {% include "includes/navbar.html" %}
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
+    <div class="main">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
             <form method="post">
                 <h1>Смена пароля</h1>
                 <div>
@@ -15,5 +14,6 @@
                 <br>
                 <input type="submit" class='btn' value="Сохранить">
             </form>
-    </form>
+        </form>
+    </div>
 {% endblock %}

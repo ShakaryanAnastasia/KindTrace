@@ -28,6 +28,11 @@
         Характер: {{ post.get_character_display }}<br>
         Описание: {{ post.description }}<br>
         Приют: {{ post.shelter }}<br>
+        {% if user.profile.type == 'Client' %}
+            <button type="button" onclick="openModal(this)" class="btn"
+                    value="{{ post.id }}">Посмотреть питомца
+            </button>
+        {% endif %}
         <hr>
         {{ post.body|linebreaks }}<br>
         {% if new_comment %}
@@ -76,7 +81,47 @@
         </div>
     </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="modal_message">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Ваша заявка успешно отправлена. Можете уточнить ее статус в разделе "Мои заявки"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modal_data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Причина отклонения</h5>
+                </div>
+                <div class="modal-body">
+                    <input id="modal_id" value="" hidden>
+                    <p>Выберите дату, когда сможете посмотреть питомца</p>
+                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <input type="text" id="dateViewing" class="form-control datetimepicker-input"
+                               data-target="#datetimepicker1"/>
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="ok">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function openModal(button) {
+            var id = button.getAttribute("value");
+            $('#modal_id').val(id);
+            $('#modal_data').modal('show');
+        }
+
         $(function () {
             $('#btn_add').click(function () {
                 $.ajax({
@@ -97,6 +142,33 @@
             });
         });
 
+        $(function () {
+            $("#datetimepicker1").datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+            });
+        });
+
+
+        $('#ok').click(function () {
+            var id = $("#modal_id").val();
+            var response = $("#dateViewing").val();
+            console.log(id)
+            console.log(response)
+            $.ajax({
+                type: 'GET',
+                url: '/create_application/' + id + '/' + response,
+                data: {},
+                dataType: 'json',
+                success: function () {
+                    $('#dateViewing').val(null);
+                    $('#modal_data').modal('hide');
+                    $('#modal_message').modal('show');
+                },
+                error: function (result) {
+                    alert(result);
+                }
+            });
+        });
     </script>
 {% endblock %}
 

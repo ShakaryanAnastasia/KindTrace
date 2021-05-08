@@ -32,7 +32,9 @@ urlpatterns = [
     path('pet/applications/applay/<int:id>/', application_pet_view.applay),
     path('pet/applications/confirm/<int:id>/', application_pet_view.confirm),
     path('client/editprofile', views.editprofileclient, name='editprofileclient'),
-    path('admin/editprofile', views.editprofileadmin, name='editprofileadmin'),
+    path('admin/editprofile', views.changepassword, name='editprofileadmin'),
     path('client/pets', pet_view.list_pet, name='client_pets'),
-
+    path('client/changepassword/', views.changepassword),
+    path('owner/changepassword/', views.changepassword),
+    path('create_application/<int:id>/<str:response>', application_pet_view.create_application),
 ]

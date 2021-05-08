@@ -2,12 +2,16 @@
 {% load crispy_forms_filters %}
 {% block content %}
     {% include "includes/navbar.html" %}
-            <form enctype="multipart/form-data" method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <span>{{ error }} </span>
+    <div class="main">
+        <form enctype="multipart/form-data" method="post">
+            Заполните форму и отправьте заявку.
+            <br>
+            Результаты рассмотрения заявки будут отправлены на указанную почту.
+            {% csrf_token %}
+            {{ form|crispy }}
+            <span>{{ error }} </span>
 
-                <button class="btn" type="submit">Ввод</button>
-            </form>
-
+            <button class="btn" type="submit">Отправить</button>
+        </form>
+    </div>
 {% endblock %}

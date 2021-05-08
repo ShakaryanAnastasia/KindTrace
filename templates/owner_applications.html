@@ -10,18 +10,20 @@
         <h1>Заявки</h1>
         {% if apps %}
             {% for el in apps %}
-                <div class="inline-group main-group">
-                    <div id='reper'>
-                        <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
-                        <p> {{ el.email }}</p>
+                {% if el.status == 'sent' %}
+                    <div class="inline-group main-group">
+                        <div id='reper'>
+                            <a href="read/{{ el.id }}" class="h3">{{ el.name }} {{ el.surname }}</a>
+                            <p> {{ el.email }}</p>
+                        </div>
+                        <div class="column-rest">
+                            <a href="applay/{{ el.id }}" id='btk' class="btn"><i class="fas fa-check"></i></a>
+                            <br>
+                            <button type="button" onclick="openModal(this)" id='btk'
+                                    value="{{ el.id }}" class="fas fa-times"></button>
+                        </div>
                     </div>
-                    <div class="column-rest">
-                        <a href="applay/{{ el.id }}" id='btk' class="btn"><i class="fas fa-check"></i></a>
-                        <br>
-                        <button type="button" onclick="openModal(this)" id='btk'
-                                value="{{ el.id }}" class="fas fa-times"></button>
-                    </div>
-                </div>
+                {% endif %}
             {% endfor %}
         {% else %}
             <p>No apps</p>
@@ -41,7 +43,6 @@
                     </label>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <button type="button" class="btn btn-primary" id="ok">Отправить</button>
                 </div>
             </div>

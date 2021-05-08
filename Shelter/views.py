@@ -2,10 +2,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, redirect
-
 # Create your views here.
 from django.views.generic import UpdateView
-
 from Shelter.forms import SignUpForm, PasswordChangeForm
 from Shelter.models import Profile, Shelter
 
@@ -49,6 +47,7 @@ class PersonUpdateView(UpdateView):
 
 def editprofileowner(request):
     try:
+        form = PasswordChangeForm()
         sexes = Profile.SEX_CHOICES
         profile = Profile.objects.get(user=request.user)
         shelter = Shelter.objects.get(user=profile)
@@ -65,12 +64,14 @@ def editprofileowner(request):
             return HttpResponseRedirect("/owner/editprofile")
         else:
             return render(request, "owner_profile.html",
-                          {"profile": profile, "shelter": shelter, "sexes": sexes})
+                          {"profile": profile, "shelter": shelter, "sexes": sexes, 'form': form})
     except Profile.DoesNotExist:
         return HttpResponseNotFound("<h2>Profile not found</h2>")
 
+
 def editprofileclient(request):
     try:
+        form = PasswordChangeForm()
         sexes = Profile.SEX_CHOICES
         profile = Profile.objects.get(user=request.user)
         if request.method == "POST":
@@ -82,24 +83,30 @@ def editprofileclient(request):
             return HttpResponseRedirect("/client/editprofile")
         else:
             return render(request, "client_profile.html",
-                          {"profile": profile, "sexes": sexes})
+                          {"profile": profile, "sexes": sexes, 'form': form})
     except Profile.DoesNotExist:
         return HttpResponseNotFound("<h2>Profile not found</h2>")
 
 
-def editprofileadmin(request):
+def changepassword(request):
+    profile = Profile.objects.get(user=request.user)
     error = ' '
-    if request.method == "POST":
-        form = PasswordChangeForm(request.POST)
+    form = PasswordChangeForm(request.POST)
+    if request.method == "POST" and form.is_valid():
         password1 = form.cleaned_data.get('password1')
         password2 = form.cleaned_data.get('password2')
-        if form.is_valid() and password1 == password2:
+        if password1 == password2:
             user = request.user
             user.set_password(password1)
             user.save()
             user = authenticate(username=user.username, password=password1)
             login(request, user)
-            return HttpResponseRedirect("/admin/editprofile")
+            if profile.type == 'Moderator':
+                return HttpResponseRedirect("/admin/editprofile")
+            if profile.type == 'Client':
+                return HttpResponseRedirect("/client/editprofile")
+            if profile.type == 'Owner':
+                return HttpResponseRedirect("/owner/editprofile")
         else:
             error = 'Проверьте пароли на соответствие требованиям и друг другу'
     form = PasswordChangeForm()
@@ -108,4 +115,3 @@ def editprofileadmin(request):
         'error': error
     }
     return render(request, "admin_profile.html", data)
-

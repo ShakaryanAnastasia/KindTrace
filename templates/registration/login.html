@@ -5,7 +5,7 @@
 {% block content %}
 
     {% include "includes/navbar.html" %}
-
+    <div class="main">
         <h1> Авторизоваться </h1>
         <form method="post">
 
@@ -17,9 +17,8 @@
 
             <button type="submit" class="btn">Войти</button>
         </form>
-        <form>
-            <button href="signup/" type="submit" class="btn"><a href="/signup/" class="nav-link">Зарегистрироваться</a>
-            </button>
-        </form>
-
+        <hr>
+        <h5>Вас еще нет в системе?</h5>
+        <a href="/signup/" class="btn" >Зарегистрироваться</a>
+    </div>
 {% endblock %}

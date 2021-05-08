@@ -62,7 +62,7 @@
                             {% endif %}
                             <ul class="submenu">
                                 {% if user.profile.type == 'Client' %}
-                                    <li><a href="/pet/applications">Мои заявки</a></li>
+                                    <li><a href="/pet/applications/{{ 1 }}">Мои заявки</a></li>
                                 {% endif %}
                                 {% if user.profile.type == 'Client' %}
                                     <li><a href="/client/pets">Мои питомцы</a></li>

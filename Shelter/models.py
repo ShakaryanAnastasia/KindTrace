@@ -225,7 +225,7 @@ class Order(models.Model):
     user = models.ForeignKey(Profile, blank=True, on_delete=models.CASCADE)
     dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
     datePickUp = models.DateField(null=True, verbose_name="Дата принятия", blank=True)
-    dateViewing = models.DateField(null=True, verbose_name="Дата просмотра животного", blank=True)
+    dateViewing = models.DateTimeField(null=True, verbose_name="Дата просмотра животного", blank=True)
     STATUS_CHOICES = (
         ('sent', "отправлена"),
         ('accepted', "принята"),

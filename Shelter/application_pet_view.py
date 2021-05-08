@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render
 
 from Shelter.models import Order, Profile, Shelter, Pet
@@ -14,7 +14,7 @@ def app(request, num):
         orders = Order.objects.all()
         orders_1 = [order for order in orders if order.pet in pets]
         if num == 1:
-            apps = [order for order in orders_1 if order.status=='sent']
+            apps = [order for order in orders_1 if order.status == 'sent']
         if num == 2:
             apps = [order for order in orders_1 if order.status == 'accepted']
     if profile.type == 'Client':
@@ -54,3 +54,13 @@ def confirm(request, id):
         return HttpResponseRedirect("/pet/applications/2")
     except Order.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
+
+
+def create_application(request, id, response):
+    try:
+        pet = Pet.objects.get(id=id)
+        user = Profile.objects.get(user=request.user)
+        Order.objects.create(pet=pet, user=user, dateViewing=response, status='sent')
+        return JsonResponse({})
+    except Order.DoesNotExist:
+        return JsonResponse({"<h2>Pet not found</h2>"})

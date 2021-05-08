@@ -4,8 +4,9 @@
 
 {% block content %}
     {% include "includes/navbar.html" %}
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
+    <div class="main">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
             <h1>Личные данные</h1>
             <label for="validationTextarea" class="form-label">Имя</label>
             <br>
@@ -57,5 +58,16 @@
             </label>
             <br>
             <input type="submit" class='btn' value="Сохранить">
-    </form>
+        </form>
+        <form enctype="multipart/form-data" method="post" action="/owner/changepassword/">
+            {% csrf_token %}
+            <h1>Смена пароля</h1>
+            <div>
+                <p> {{ form|crispy }}</p>
+            </div>
+            <span>{{ error }} </span>
+            <br>
+            <input type="submit" class='btn' value="Сохранить">
+        </form>
+    </div>
 {% endblock %}

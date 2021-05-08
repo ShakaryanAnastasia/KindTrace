@@ -24,48 +24,49 @@
                     {% endif %}
                 </ul>
             </nav>
-            {% for el in apps %}
-                <div class="inline-group main-group">
-                    <div class="reper" style="text-align: left; width: 350px; padding-left: 40px">
-                        Пользователь: {{ el.user }}
-                        <br>
-                        Питомец: {{ el.pet }}
-                        <br>
-                        Готов посмотреть: {{ el.dateViewing }}
-                        <br>
-                        Заявка подана: {{ el.dateCreate }}
-                    </div>
-                    {% if num == 2 %}
-                        <div class="column-rest">
-                            <buttons href="/pet/applications/confirm/{{ el.id }}" data-bs-toggle="tooltip"
-                                     data-bs-placement="right" id='btk' title data-bs-original-title="Отдать питомца"><i
-                                    class="fas fa-check-circle"></i></buttons>
-                        </div>
-                    {% endif %}
-                    {% if num == 1 %}
-                        <div class="column-rest">
-                            {% if user.profile.type == 'Owner' %}
-                                <a href="/pet/applications/applay/{{ el.id }}" data-bs-toggle="tooltip"
-                                   data-bs-placement="right" id='btk' class="btn" title
-                                   data-bs-original-title="Принять заявку"><i
-                                        class="fas fa-check"></i></a>
-                                <br>
-                                <a href="/pet/applications/reject/{{ el.id }}" data-bs-toggle="tooltip"
-                                   data-bs-placement="right" id='btk' class="btn" title
-                                   data-bs-original-title="Отклонить заявку"><i
-                                        class="fas fa-times"></i></a>
-                            {% endif %}
-                            {% if user.profile.type == 'Client' %}
-                                {{ el.get_status_display }}
-                            {% endif %}
-                        </div>
-                    {% endif %}
-
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>У вас еще нет заявок</p>
         {% endif %}
+        {% for el in apps %}
+            <div class="inline-group main-group">
+                <div class="reper" style="text-align: left; width: 350px; padding-left: 40px">
+                    Пользователь: {{ el.user }}
+                    <br>
+                    Номер телефона: {{ el.user.phoneNum }}
+                    <br>
+                    Питомец: {{ el.pet }}
+                    <br>
+                    Готов посмотреть: {{ el.dateViewing }}
+                    <br>
+                    Заявка подана: {{ el.dateCreate }}
+                </div>
+                {% if num == 2 %}
+                    <div class="column-rest">
+                        <buttons href="/pet/applications/confirm/{{ el.id }}" data-bs-toggle="tooltip"
+                                 data-bs-placement="right" id='btk' title data-bs-original-title="Отдать питомца"><i
+                                class="fas fa-check-circle"></i></buttons>
+                    </div>
+                {% endif %}
+                {% if num == 1 %}
+                    <div class="column-rest">
+                        {% if user.profile.type == 'Owner' %}
+                            <a href="/pet/applications/applay/{{ el.id }}" data-bs-toggle="tooltip"
+                               data-bs-placement="right" id='btk' class="btn" title
+                               data-bs-original-title="Принять заявку"><i
+                                    class="fas fa-check"></i></a>
+                            <br>
+                            <a href="/pet/applications/reject/{{ el.id }}" data-bs-toggle="tooltip"
+                               data-bs-placement="right" id='btk' class="btn" title
+                               data-bs-original-title="Отклонить заявку"><i
+                                    class="fas fa-times"></i></a>
+                        {% endif %}
+                        {% if user.profile.type == 'Client' %}
+                            {{ el.get_status_display }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
     </div>
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
