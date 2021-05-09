@@ -60,6 +60,10 @@
                         {% endif %}
                         {% if user.profile.type == 'Client' %}
                             {{ el.get_status_display }}
+                            <br>
+                            <a href="/delete_application_pet/{{ el.id }}" data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title data-bs-original-title="Отменить заявку"><i class="fas fa-trash-alt"></i></a>
                         {% endif %}
                     </div>
                 {% endif %}

@@ -6,26 +6,28 @@
 {% load crispy_forms_filters %}
 {% block content %}
     {% include "includes/navbar.html" %}
-    {% for el,image in apps %}
-        <div class="inline-group main-group">
-            <div id='reper'>
-                <h2>
-                    <a href="{{ el.get_url }}">
-                        {{ el.name }}
-                    </a>
-                </h2>
-                <p class="date">
-                    Возраст: {{ el.age }} год
-                </p>
-                <p class="date">
-                    Пол: {{ el.get_sex_display }}
-                </p>
+    <div class="main">
+        {% for el,image in apps %}
+            <div class="inline-group main-group">
+                <div id='reper'>
+                    <h2>
+                        <a href="/report/{{ el.id }}">
+                            {{ el.name }}
+                        </a>
+                    </h2>
+                    <p class="date">
+                        Возраст: {{ el.age }} год
+                    </p>
+                    <p class="date">
+                        Пол: {{ el.get_sex_display }}
+                    </p>
+                </div>
+                <div id='reper'>
+                    {% if not image == null %}
+                        <img src='/{{ image }}' class="pet-img" alt="pet img">
+                    {% endif %}
+                </div>
             </div>
-            <div id='reper'>
-                {% if not image == null %}
-                    <img src='/{{ image }}' class="pet-img" alt="pet img" style="padding-bottom: 50px ">
-                {% endif %}
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}

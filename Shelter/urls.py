@@ -37,4 +37,6 @@ urlpatterns = [
     path('client/changepassword/', views.changepassword),
     path('owner/changepassword/', views.changepassword),
     path('create_application/<int:id>/<str:response>', application_pet_view.create_application),
+    path('delete_application_pet/<int:id>/', application_pet_view.deletepetapplications),
+    path('report/<int:id>/', pet_view.report_detail, name='post_report'),
 ]

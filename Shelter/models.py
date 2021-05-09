@@ -201,6 +201,13 @@ class Comment(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Задача", related_name='comments', null=True)
 
 
+class Report(models.Model):
+    body = models.TextField(verbose_name="Отчет")
+    dateCreate = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="Пользователь")
+    pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name="Питомец", related_name='reports', null=True)
+
+
 def user_directory_path_image(instance, filename):
     return f'static/images/{instance.id}_{"".join(filename.split(".")[:-1])}.{filename.split(".")[-1]}'
 
@@ -211,6 +218,7 @@ class Image(models.Model):
     pet = models.ForeignKey(Pet, blank=True, null=True, on_delete=models.CASCADE)
     news = models.ForeignKey(News, blank=True, null=True, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, blank=True, null=True, on_delete=models.CASCADE)
+    report = models.ForeignKey(Report, blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Изображения"

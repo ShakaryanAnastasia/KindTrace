@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 
-from Shelter.models import OwnerApplication, Pet, Comment, News, Task
+from Shelter.models import OwnerApplication, Pet, Comment, News, Task, Report
 
 
 class SignUpForm(UserCreationForm):
@@ -38,7 +38,8 @@ class ApplicationOwnerForm(ModelForm):
 
     class Meta:
         model = OwnerApplication
-        fields = ['name', 'surname', 'email', 'phoneNum', 'sex', 'title_shelter', 'address_shelter', 'description_shelter']
+        fields = ['name', 'surname', 'email', 'phoneNum', 'sex', 'title_shelter', 'address_shelter',
+                  'description_shelter']
 
 
 class PetForm(ModelForm):
@@ -57,7 +58,6 @@ class CommentForm(ModelForm):
 
         widgets = {
             'body': forms.Textarea(attrs={'class': 'form-comment'}),
-
         }
 
 
@@ -89,6 +89,18 @@ class TaskForm(ModelForm):
 class PasswordChangeForm(ModelForm):
     password1 = forms.CharField(max_length=15, widget=forms.PasswordInput(), label="Пароль")
     password2 = forms.CharField(max_length=15, widget=forms.PasswordInput(), label="Повторите пароль")
+
     class Meta:
         model = User
         fields = ('password1', 'password2')
+
+
+class ReportForm(ModelForm):
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False,
+                              label='Изображения')
+    class Meta:
+        model = Report
+        fields = ['body']
+        widgets = {
+            'body': forms.Textarea(attrs={'placeholder': 'Ваш отчет'}),
+        }

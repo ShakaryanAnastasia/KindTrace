@@ -3,8 +3,8 @@ from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 from Shelter import models
-from Shelter.forms import CommentForm, PetForm
-from Shelter.models import Pet, Profile, Shelter, Image
+from Shelter.forms import CommentForm, PetForm, ReportForm
+from Shelter.models import Pet, Profile, Shelter, Image, Report
 
 
 def petapp(request, num):
@@ -166,3 +166,35 @@ def deleteimages_pet(request, id):
         return HttpResponseRedirect(f"/editpet/{id_pet}")
     except Pet.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
+
+
+def report_detail(request, id):
+    post = Pet.objects.get(id=id)
+    pet_images = list(Image.objects.filter(pet=post))
+    reports = Report.objects.filter(pet=post)
+    images_reports = [list(Image.objects.filter(report=report)) for report in reports]
+    new_report = None
+    if request.method == 'POST':
+        report_form = ReportForm(request.POST, request.FILES)
+        if report_form.is_valid():
+            images = request.FILES.getlist('images')
+            new_report = report_form.save(commit=False)
+            new_report.user = Profile.objects.get(user=request.user)
+            new_report.pet = post
+            new_report.save()
+            if images:
+                for i in images:
+                    file_path = handle_uploaded_image(i, new_report)
+                    if file_path:
+                        fl = Image(report=new_report, image=file_path)
+                        fl.save()
+            return HttpResponseRedirect(f"/report/{id}")
+    else:
+        report_form = ReportForm()
+        return render(request,
+                      'pet_report.html',
+                      {'post': post,
+                       'images': pet_images,
+                       'reports': zip(reports, images_reports),
+                       'new_report': new_report,
+                       'report_form': report_form})

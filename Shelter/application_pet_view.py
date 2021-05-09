@@ -64,3 +64,11 @@ def create_application(request, id, response):
         return JsonResponse({})
     except Order.DoesNotExist:
         return JsonResponse({"<h2>Pet not found</h2>"})
+
+def deletepetapplications(request, id):
+    try:
+        remove = Order.objects.get(id=id)
+        remove.delete()
+        return HttpResponseRedirect("/pet/applications/1")
+    except Pet.DoesNotExist:
+        return HttpResponseNotFound("<h2>Order not found</h2>")

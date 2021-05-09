@@ -44,8 +44,12 @@
                                 Пол: {{ el.get_sex_display }}
                                 <br>
                                 {% if user.is_authenticated and user.profile.type == 'Owner' %}
-                                    <a href="/editpet/{{ el.id }}"><i class="fas fa-edit"></i></a>
-                                    <a href="/deletepet/{{ el.id }}"><i class="fas fa-trash-alt"></i></a>
+                                    <a href="/editpet/{{ el.id }}" data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title data-bs-original-title="Изменить заявку"><i class="fas fa-edit"></i></a>
+                                    <a href="/deletepet/{{ el.id }}" data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title data-bs-original-title="Удалить заявку"><i class="fas fa-trash-alt"></i></a>
                                 {% endif %}
                             </div>
                         </div>
@@ -54,4 +58,13 @@
             </div>
         </div>
     </div>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 {% endblock %}

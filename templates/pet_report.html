@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Creation form {% endblock %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/pets.css' %}>
+{% endblock %}
+{% block content %}
+    {% include "includes/navbar.html" %}
+    <div class="main">
+        <h1>{{ post.name }}</h1>
+        <form enctype="multipart/form-data" method="post">
+            <div class="row row-cols-auto justify-content-md-center">
+                {% for image in images %}
+                    <div class="col-auto">
+                        <div class="card h-100 w-70" style="margin-top: 15px">
+                            {% if not image == null %}
+                                <img src='/{{ image }}' class="pet-img" alt="pet img">
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+            Возраст: {{ post.age }} <br>
+            Пол: {{ post.get_sex_display }}<br>
+            Цвет: {{ post.get_color_display }}<br>
+            Тип шерсти: {{ post.get_wool_display }}<br>
+            Характер: {{ post.get_character_display }}<br>
+            Описание: {{ post.description }}<br>
+            Приют: <a href="#" onclick="openModalShelter()">{{ post.shelter }}</a> <br>
+            <hr>
+            {{ post.body|linebreaks }}<br>
+            {% if new_report %}
+                <h2>Ваш отчет добавлен</h2>
+            {% else %}
+                <h2>Добавьте свой отчет</h2>
+                <form action="." method="post">
+                    <div class="form-comment">
+                        {{ report_form.body|as_crispy_field }}
+                        {{ report_form.images|as_crispy_field }}
+                    </div>
+                    {% csrf_token %}
+                    <button class="btn" type="submit">Добавить</button>
+                </form>
+            {% endif %}
+            <hr>
+            {% for report, report_images in reports %}
+                <div class="comment">
+                    {{ report.dateCreate }} <br>
+                    {{ report.user }}<br>
+                    {{ report.body|linebreaks }}
+                    <div class="row row-cols-auto justify-content-md-center">
+                        {% for report_image in report_images %}
+                            <div class="col-auto">
+                                <div class="card h-100 w-70" style="margin-top: 15px">
+                                    {% if not report_image == null %}
+                                        <img src='/{{ report_image }}' class="pet-img" alt="pet img">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>Вы еще не добавляли отчет</p>
+            {% endfor %}
+        </form>
+    </div>
+    <script>
+        function openModalShelter() {
+            $('#modal_shelter').modal('show');
+        }
+    </script>
+{% endblock %}

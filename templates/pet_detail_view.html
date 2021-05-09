@@ -27,7 +27,7 @@
         Тип шерсти: {{ post.get_wool_display }}<br>
         Характер: {{ post.get_character_display }}<br>
         Описание: {{ post.description }}<br>
-        Приют: {{ post.shelter }}<br>
+        Приют: <a href="#" onclick="openModalShelter()">{{ post.shelter }}</a> <br>
         {% if user.profile.type == 'Client' %}
             <button type="button" onclick="openModal(this)" class="btn"
                     value="{{ post.id }}">Посмотреть питомца
@@ -81,6 +81,25 @@
         </div>
     </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="modal_shelter">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Приют {{ post.shelter.title }}</h5>
+                </div>
+                <div class="modal-body">
+                    Хозяин приюта: {{ post.shelter.user.first_name }} {{ post.shelter.user.last_name }}
+                    <br>
+                    Контактный номер: {{ post.shelter.user.phoneNum }}
+                    <br>
+                    Адрес приюта: {{ post.shelter.address }}
+                    <br>
+                    {{ post.shelter.description }}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" tabindex="-1" role="dialog" id="modal_message">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -120,6 +139,10 @@
             var id = button.getAttribute("value");
             $('#modal_id').val(id);
             $('#modal_data').modal('show');
+        }
+
+        function openModalShelter() {
+            $('#modal_shelter').modal('show');
         }
 
         $(function () {
