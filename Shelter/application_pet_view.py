@@ -51,6 +51,12 @@ def confirm(request, id):
         pet.save()
         order.status = "confirmed"
         order.save()
+        orders_for_this_pet = Order.objects.filter(pet=pet)
+        if orders_for_this_pet:
+            for ord in orders_for_this_pet:
+                if ord.status != "confirmed":
+                    ord.status = "rejected"
+                    ord.save()
         return HttpResponseRedirect("/pet/applications/2")
     except Order.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")

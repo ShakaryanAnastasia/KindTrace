@@ -9,7 +9,7 @@
     <div class="main">
         {% if user.is_authenticated and user.profile.type == 'Owner' %}
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn" style="background-color: #0ba434"><a href="addpet" class="nav-link">Добавить</a>
+                <button type="submit" class="btn" style="background-color: #0ba434"><a href="/addpet" class="nav-link">Добавить</a>
                 </button>
             </div>
             <nav aria-label="Page navigation example">
@@ -35,9 +35,16 @@
                             {% endif %}
                             <div class="card-body">
                                 <h3 class="text-center">
-                                    <a href="{{ el.get_url }}">
-                                        {{ el.name }}
-                                    </a>
+                                    {% if num == 1 %}
+                                        <a href="{{ el.get_url }}">
+                                            {{ el.name }}
+                                        </a>
+                                    {% endif %}
+                                    {% if num == 2 %}
+                                        <a href="/report/{{ el.id }}">
+                                            {{ el.name }}
+                                        </a>
+                                    {% endif %}
                                 </h3>
                                 Возраст: {{ el.age }}
                                 <br>
@@ -45,11 +52,12 @@
                                 <br>
                                 {% if user.is_authenticated and user.profile.type == 'Owner' %}
                                     <a href="/editpet/{{ el.id }}" data-bs-toggle="tooltip"
-                               data-bs-placement="right"
-                               title data-bs-original-title="Изменить заявку"><i class="fas fa-edit"></i></a>
+                                       data-bs-placement="right"
+                                       title data-bs-original-title="Изменить питомца"><i class="fas fa-edit"></i></a>
                                     <a href="/deletepet/{{ el.id }}" data-bs-toggle="tooltip"
-                               data-bs-placement="right"
-                               title data-bs-original-title="Удалить заявку"><i class="fas fa-trash-alt"></i></a>
+                                       data-bs-placement="right"
+                                       title data-bs-original-title="Удалить питомца"><i
+                                            class="fas fa-trash-alt"></i></a>
                                 {% endif %}
                             </div>
                         </div>

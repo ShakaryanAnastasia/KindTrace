@@ -161,6 +161,7 @@ class News(models.Model):
     body = models.TextField(null=True, verbose_name="Содержание")
     objects = models.Manager()
     shelter = models.ForeignKey(Shelter, on_delete=models.CASCADE)
+    dateCreate = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
 
     def str(self):
         return " ".join([self.title])

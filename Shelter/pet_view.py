@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 
 from Shelter import models
 from Shelter.forms import CommentForm, PetForm, ReportForm
-from Shelter.models import Pet, Profile, Shelter, Image, Report
+from Shelter.models import Pet, Profile, Shelter, Image, Report, Order
 
 
 def petapp(request, num):
@@ -133,6 +133,11 @@ def editpet(request, id):
             pet.description = request.POST.get("description")
             if request.POST.get("check") == 'check':
                 pet.owner = Profile.objects.get(user=request.user)
+                orders_for_this_pet = Order.objects.filter(pet=pet)
+                if orders_for_this_pet:
+                    for ord in orders_for_this_pet:
+                        ord.status = "rejected"
+                        ord.save()
             pet.save()
             if images:
                 for i in images:

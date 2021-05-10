@@ -1,22 +1,46 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
-{% block title %} Creation form {% endblock %}
-
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/pets.css' %}>
+{% endblock %}
 {% block content %}
     {% include "includes/navbar.html" %}
-        <h1>{{ new.title }}</h1><br>
-        {% for image in images %}
-            {% if image %}
-                <img src='/{{ image }}' class="pet-img" alt="pet img">
-            {% endif %}
-        {% endfor %}
-        <p class="date">
-            {{ new.body }}<br>
-            {% with comments.count as total_comments %}
-                <h2>
-                    {{ total_comments }} комментариев
-                </h2>
-            {% endwith %}
+    <div class="main">
+        <h1>{{ new.title }}</h1>
+        <div class="row row-cols-auto justify-content-md-center">
+            {% for image in images %}
+                <div class="col-auto">
+                    <div class="card h-100 w-70" style="margin-top: 15px">
+                        {% if not image == null %}
+                            <img src='/{{ image }}' class="pet-img" alt="pet img">
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+        {{ new.body }}<br>
+        Приют: <a href="#" onclick="openModalShelter()">{{ new.shelter }}</a> <br>
+        c
+        {% if new_comment %}
+            <h2>Ваш комментарий добавлен</h2>s
+        {% else %}
+            <h2>Добавьте свой комментарий</h2>
+            <form action="." method="post">
+                {{ comment_form.title|as_crispy_field }}
+                <div class="form-comment">
+                    {{ comment_form.body|as_crispy_field }}
+                </div>
+                {% csrf_token %}
+                <p><input type="button" id="btn_add" class="btn" value="Добавить"></p>
+            </form>
+        {% endif %}
+        {% with comments.count as total_comments %}
+            <h2>
+                {{ total_comments }} комментариев
+            </h2>
+        {% endwith %}
         {% for comment in comments %}
             <div class="comment">
                 <p class="info">
@@ -29,20 +53,8 @@
         {% empty %}
             <p>Комментариев еще нет</p>
         {% endfor %}
-        {% if new_comment %}
-            <h2>Ваш комментарий добавлен</h2>
-        {% else %}
-            <h2>Добавьте свой комментарий</h2>
-            <form action="." method="post">
-                {{ comment_form.title|as_crispy_field }}
-                <div class="form-comment">
-                    {{ comment_form.body|as_crispy_field }}
-                </div>
-                <br><br>
-                {% csrf_token %}
-                 <p><input type="button" id="btn_add" class="btn" value="Добавить"></p>
-            </form>
-        {% endif %}
+
+    </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
@@ -56,8 +68,31 @@
             </div>
         </div>
     </div>
+    <div class="modal" tabindex="-1" role="dialog" id="modal_shelter">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Приют {{ new.shelter.title }}</h5>
+                </div>
+                <div class="modal-body">
+                    Хозяин приюта: {{ new.shelter.user.first_name }} {{ new.shelter.user.last_name }}
+                    <br>
+                    Контактный номер: {{ new.shelter.user.phoneNum }}
+                    <br>
+                    Адрес приюта: {{ new.shelter.address }}
+                    <br>
+                    {{ new.shelter.description }}
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
+        function openModalShelter() {
+            $('#modal_shelter').modal('show');
+        }
+
         $(function () {
             $('#btn_add').click(function () {
                 $.ajax({

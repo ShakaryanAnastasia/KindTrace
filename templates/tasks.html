@@ -2,24 +2,46 @@
 {% load static %}
 {% block content %}
     {% include "includes/navbar.html" %}
+    <div class="main">
         {% if user.is_authenticated and user.profile.type == 'Owner' %}
-            <button href="" type="submit" class="btn" ><a href="addtask" class="nav-link">Добавить</a>
-            </button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn" style="background-color: #0ba434"><a href="addtask" class="nav-link">Добавить</a>
+                </button>
+            </div>
         {% endif %}
         {% for el,image in apps %}
-                <a href="{{ el.get_url }}">
-                    {% if not image == null %}
-                        <img src='{{ image }}' class="pet-img" alt="pet img">
-                    {% endif %}
-                    <h3> {{ el.title }}</h3>
-                </a>
-                <p>Дата создания: {{ el.dateCreate }}</p>
-                <p>Дата выполнения: {{ el.dateExpiration }}</p>
-                {% if user.is_authenticated and user.profile.type == 'Owner' %}
-                    <a href="edittask/{{ el.id }}" class="btn">Редактировать</a><br>
-                    <a href="deletetask/{{ el.id }}" class="btn">Удалить</a>
+            <div class="card mb-3" style="width: 50vw">
+                {% if not image == null %}
+                    <img src='{{ image }}' class="card-img-top" alt="pet img">
                 {% endif %}
-
+                <div class="card-body">
+                    <a href="{{ el.get_url }}">
+                        <h3 class="card-title">{{ el.title }}</h3>
+                    </a>
+                    <p class="card-text"><small class="text-muted">Дата создания: {{ el.dateCreate }}</small></p>
+                    <p class="card-text"><small class="text-muted">Дата выполнения: {{ el.dateExpiration }}</small></p>
+                    {% if user.is_authenticated and user.profile.type == 'Owner' %}
+                        <p class="card-text"><small class="text-muted">
+                        <a href="edittask/{{ el.id }}" data-bs-toggle="tooltip"
+                           data-bs-placement="right"
+                           title data-bs-original-title="Изменить задачу" style="margin-right: 10px"><i
+                                class="fas fa-edit"></i></a>
+                        <a href="deletetask/{{ el.id }}" data-bs-toggle="tooltip"
+                           data-bs-placement="right"
+                           title data-bs-original-title="Удалить задачу"><i
+                                class="fas fa-trash-alt"></i></a>
+                    {% endif %}</small></p>
+                </div>
+            </div>
         {% endfor %}
-
+    </div>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 {% endblock %}

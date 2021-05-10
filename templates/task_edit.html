@@ -4,8 +4,9 @@
 
 {% block content %}
     {% include "includes/navbar.html" %}
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
+    <div class="main">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
             <label for="validationTextarea" class="form-label">Название задачи</label>
             <br>
             <label>
@@ -21,8 +22,9 @@
             <label for="validationTextarea" class="form-label">Дата выполнения: </label>
             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                 <label>
-                    <input type="text" name ="dateExpiration" class="form-control datetimepicker-input" data-target="#datetimepicker1"
-                           value= {{ task.dateExpiration}} />
+                    <input type="text" name="dateExpiration" class="form-control datetimepicker-input"
+                           data-target="#datetimepicker1"
+                           value={{ task.dateExpiration }}/>
                 </label>
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -34,18 +36,28 @@
                 {% for image in images %}
                     {% if image %}
                         <img src='/{{ image }}' class="pet-img" alt="pet img">
-                        <a href="/task/deleteimages/{{ image.id }}" class="btn">Удалить</a>
+                        <a href="/task/deleteimages/{{ image.id }}" data-bs-toggle="tooltip"
+                           data-bs-placement="right"
+                           title data-bs-original-title="Удалить изображение"><i class="fas fa-trash-alt"></i></a>
                         <br>
                     {% endif %}
                 {% endfor %}
-                <br>
                 <input type="submit" class='btn' value="Сохранить">
-    </form>
+        </form>
+    </div>
     <script>
         $(function () {
             $("#datetimepicker1").datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
             });
+        });
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         });
     </script>
 {% endblock %}

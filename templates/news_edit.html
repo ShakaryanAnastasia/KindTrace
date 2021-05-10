@@ -1,39 +1,50 @@
 {% extends 'base.html' %}
-
 {% load crispy_forms_filters %}
-
 {% block content %}
     {% include "includes/navbar.html" %}
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        <label for="validationTextarea" class="form-label">Название новости</label>
-        <br>
-        <label>
-            <input type="text" name="title" class='form-control' value="{{ news.title }}"/>
-        </label>
-        <br>
-        <label for="validationTextarea" class="form-label">Анонс новости</label>
-        <br>
-        <label>
-            <input type="text" name="anons" class='form-control' value="{{ news.anons }}"/>
-        </label>
-        <br>
-        <label for="validationTextarea" class="form-label">Содержание новости</label>
-        <br>
-        <label>
-            <textarea class="form-control" name="body" required>{{ news.body }}</textarea>
-        </label>
-        <br><br>
-        <p><input type="file" name="images" multiple accept="image/*">
-            <br><br>
-            {% for image in images %}
-                {% if image %}
-                    <img src='/{{ image }}' class="pet-img" alt="pet img">
-                    <a href="/news/deleteimages/{{ image.id }}" class="btn">Удалить</a>
-                    <br>
-                {% endif %}
-            {% endfor %}
+    <div class="main">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <label for="validationTextarea" class="form-label">Название новости</label>
             <br>
-            <input type="submit" class='btn' value="Сохранить">
-    </form>
+            <label>
+                <input type="text" name="title" class='form-control' value="{{ news.title }}"/>
+            </label>
+            <br>
+            <label for="validationTextarea" class="form-label">Анонс новости</label>
+            <br>
+            <label>
+                <input type="text" name="anons" class='form-control' value="{{ news.anons }}"/>
+            </label>
+            <br>
+            <label for="validationTextarea" class="form-label">Содержание новости</label>
+            <br>
+            <label>
+                <textarea class="form-control" name="body" required>{{ news.body }}</textarea>
+            </label>
+            <br><br>
+            <p><input type="file" name="images" multiple accept="image/*">
+                <br><br>
+                {% for image in images %}
+                    {% if image %}
+                        <img src='/{{ image }}' class="pet-img" alt="pet img">
+                        <a href="/news/deleteimages/{{ image.id }}" data-bs-toggle="tooltip"
+                           data-bs-placement="right"
+                           title data-bs-original-title="Удалить изображение"><i class="fas fa-trash-alt"></i></a>
+                        <br>
+                    {% endif %}
+                {% endfor %}
+                <br>
+                <input type="submit" class='btn' value="Сохранить">
+        </form>
+    </div>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 {% endblock %}

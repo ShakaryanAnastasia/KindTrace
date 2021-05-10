@@ -2,20 +2,46 @@
 {% load static %}
 {% block content %}
     {% include "includes/navbar.html" %}
+    <div class="main">
         {% if user.is_authenticated and user.profile.type == 'Owner' %}
-            <button href="" type="submit" class="btn"><a href="addnews" class="nav-link" >Добавить</a></button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn" style="background-color: #0ba434"><a href="addnews" class="nav-link">Добавить</a>
+                </button>
+            </div>
         {% endif %}
         {% for el,image in apps %}
-                <a href="{{ el.got_url }}">
-                    {% if not image == null %}
-                        <img src='{{ image }}' class="pet-img" alt="pet img">
-                    {% endif %}
-                    <h3> {{ el.title }}</h3>
-                </a>
-                <p>{{ el.anons }}</p>
-                {% if user.is_authenticated and user.profile.type == 'Owner' %}
-                    <a href="editnews/{{ el.id }}" class="btn">Редактировать</a><br>
-                    <a href="deletenews/{{ el.id }}" class="btn">Удалить</a>
+            <div class="card mb-3" style="width: 50vw">
+                {% if not image == null %}
+                    <img src='/{{ image }}' class="card-img-top" alt="pet img">
                 {% endif %}
+                <div class="card-body">
+                    <a href="{{ el.got_url }}">
+                        <h3 class="card-title">{{ el.title }}</h3>
+                    </a>
+                    <h5 class="card-text">{{ el.anons }}</h5>
+                    <p class="card-text"><small class="text-muted"> {{ el.dateCreate }}</small></p>
+                    <p class="card-text"><small class="text-muted">
+                        {% if user.is_authenticated and user.profile.type == 'Owner' %}
+                            <a href="editnews/{{ el.id }}" data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title data-bs-original-title="Изменить новость" style="margin-right: 10px"><i class="fas fa-edit"></i></a>
+                            <a href="deletenews/{{ el.id }}" data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title data-bs-original-title="Удалить новость"><i
+                                    class="fas fa-trash-alt"></i></a>
+                        {% endif %}</small></p>
+                </div>
+            </div>
         {% endfor %}
+    </div>
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 {% endblock %}

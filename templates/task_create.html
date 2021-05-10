@@ -2,7 +2,8 @@
 {% load crispy_forms_filters %}
 {% block content %}
     {% include "includes/navbar.html" %}
-        <h1>Добавление задачи</h1>
+    <div class="main">
+        <h1>Добавить задачу</h1>
         <form enctype="multipart/form-data" method="post">
             {% csrf_token %}
             {{ form.title|as_crispy_field }}
@@ -15,8 +16,9 @@
             </div>
             <span>{{ error }} </span>
             {{ form.images|as_crispy_field }}
-            <button class="btn" type="submit">Ввод</button>
+            <button class="btn" type="submit">Добавить</button>
         </form>
+    </div>
     <script>
         $(function () {
             $("#datetimepicker1").datetimepicker({

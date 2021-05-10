@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
-
 {% load crispy_forms_filters %}
-{% block title %} {{ shelter.title }} {% endblock %}
-
 {% block content %}
     {% include "includes/navbar.html" %}
     <div class="main">
@@ -83,7 +80,9 @@
                 {% for image in images %}
                     {% if image %}
                         <img src='/{{ image }}' class="pet-img" alt="pet img">
-                        <a href="/pet/deleteimages/{{ image.id }}"><i class="fas fa-trash-alt"></i></a>
+                        <a href="/pet/deleteimages/{{ image.id }}" data-bs-toggle="tooltip"
+                           data-bs-placement="right"
+                           title data-bs-original-title="Удалить изображение"><i class="fas fa-trash-alt"></i></a>
                         <br>
                     {% endif %}
                 {% endfor %}
@@ -97,4 +96,13 @@
             <input type="submit" class='btn' value="Сохранить">
         </form>
     </div>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 {% endblock %}

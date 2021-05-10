@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
-{% block title %} Creation form {% endblock %}
 {% load static %}
 {% block styles %}
     <link rel="stylesheet" href={% static 'css/pets.css' %}>
@@ -113,9 +112,6 @@
     <div class="modal" tabindex="-1" role="dialog" id="modal_data">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Причина отклонения</h5>
-                </div>
                 <div class="modal-body">
                     <input id="modal_id" value="" hidden>
                     <p>Выберите дату, когда сможете посмотреть питомца</p>
