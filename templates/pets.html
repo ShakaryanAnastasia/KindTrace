@@ -26,44 +26,145 @@
             </nav>
         {% endif %}
         <div class="container">
-            <div class="row row-cols-auto justify-content-md-center">
-                {% for el,image in apps %}
+            <form action="." method="POST">
+                {% csrf_token %}
+                <div class="row align-items-start">
                     <div class="col-auto">
-                        <div class="card h-100 w-70">
-                            {% if not image == null %}
-                                <img src='/{{ image }}' class="pet-img" alt="pet img">
-                            {% endif %}
+                        <div class="card" style="background-color: #efefef">
                             <div class="card-body">
-                                <h3 class="text-center">
-                                    {% if num == 1 %}
-                                        <a href="{{ el.get_url }}">
-                                            {{ el.name }}
-                                        </a>
+                                <label for="validationTextarea" class="form-label">Тип питомца</label>
+                                <label for="floatingSelect"></label><select class="form-select" id="floatingSelect"
+                                                                            name="type" multiple
+                                                                            size="{{ types|length }}"
+                                                                            style="width: 150px">
+                                {% for type,f_type in types %}
+                                    {% if type in params.type %}
+                                        <option selected value="{{ type }}">{{ f_type }}</option>
+                                    {% else %}
+                                        <option value="{{ type }}">{{ f_type }}</option>
                                     {% endif %}
-                                    {% if num == 2 %}
-                                        <a href="/report/{{ el.id }}">
-                                            {{ el.name }}
-                                        </a>
-                                    {% endif %}
-                                </h3>
-                                Возраст: {{ el.age }}
-                                <br>
-                                Пол: {{ el.get_sex_display }}
-                                <br>
-                                {% if user.is_authenticated and user.profile.type == 'Owner' %}
-                                    <a href="/editpet/{{ el.id }}" data-bs-toggle="tooltip"
-                                       data-bs-placement="right"
-                                       title data-bs-original-title="Изменить питомца"><i class="fas fa-edit"></i></a>
-                                    <a href="/deletepet/{{ el.id }}" data-bs-toggle="tooltip"
-                                       data-bs-placement="right"
-                                       title data-bs-original-title="Удалить питомца"><i
-                                            class="fas fa-trash-alt"></i></a>
-                                {% endif %}
+                                {% endfor %}
+                            </select>
+                                <label class="form-label">Возраст</label>
+                                <div class="inline-group mb-3">
+                                    <label class="form-label">от&nbsp;</label>
+                                    <div class="form-floating mb-3 cd">
+                                        <input type="number" class="form-control"
+                                               name="ageFrom" min='0' value="{{ params.ageFrom }}" style="width: 150px">
+                                    </div>
+                                    <label class="form-label">&nbsp;до&nbsp;</label>
+                                    <div class="form-floating mb-3 cd">
+                                        <input type="number" class="form-control"
+                                               name="ageTo" min='0' value="{{ params.ageTo }}" style="width: 150px">
+                                    </div>
+                                    <label for="validationTextarea" class="form-label">Пол питомца</label>
+                                    <label for="floatingSelect"></label><select class="form-select" id="floatingSelect"
+                                                                                name="sex" multiple
+                                                                                size="{{ sexes|length }}"
+                                                                                style="width: 150px">
+                                    {% for sex,f_sex in sexes %}
+                                        {% if sex in params.sex %}
+                                            <option selected value="{{ sex }}">{{ f_sex }}</option>
+                                        {% else %}
+                                            <option value="{{ sex }}">{{ f_sex }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                    <label for="validationTextarea" class="form-label">Цвет питомца</label>
+                                    <label for="floatingSelect"></label><select class="form-select" id="floatingSelect"
+                                                                                name="color" multiple
+                                                                                size="{{ colors|length }}"
+                                                                                style="width: 150px">
+                                    {% for color,f_color in colors %}
+                                        {% if color in params.color %}
+                                            <option selected value="{{ color }}">{{ f_color }}</option>
+                                        {% else %}
+                                            <option value="{{ color }}">{{ f_color }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                    <label for="validationTextarea" class="form-label">Тип шерсти питомца</label>
+                                    <label for="floatingSelect"></label><select class="form-select" id="floatingSelect"
+                                                                                name="wool" multiple
+                                                                                size="{{ wools|length }}"
+                                                                                style="width: 150px">
+                                    {% for wool,f_wool in wools %}
+                                        {% if wool in params.wool %}
+                                            <option selected value="{{ wool }}">{{ f_wool }}</option>
+                                        {% else %}
+                                            <option value="{{ wool }}">{{ f_wool }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                    <label for="validationTextarea" class="form-label">Характер питомца</label>
+                                    <label for="floatingSelect"></label><select class="form-select" id="floatingSelect"
+                                                                                name="character"
+                                                                                multiple size="{{ characters|length }}"
+                                                                                style="width: 150px">
+                                    {% for character,f_character in characters %}
+                                        {% if character in params.character %}
+                                            <option selected value="{{ character }}">{{ f_character }}</option>
+                                        {% else %}
+                                            <option value="{{ character }}">{{ f_character }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                    <div class="crt-btn">
+                                        <button type="submit" class="btn btn-info mb-3" name="apply"
+                                        >Применить
+                                        </button>
+                                        <button type="submit" class="btn btn-light mb-3" name="reset"
+                                        >Сбросить
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                    <div class="col">
+                        <div class="row row-cols-auto">
+                            {% for el,image in apps %}
+                                <div class="col-auto">
+                                    <div class="card h-100 w-70">
+                                        {% if not image == null %}
+                                            <img src='/{{ image }}' class="pet-img" alt="pet img">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h3 class="text-center">
+                                                {% if num == 1 %}
+                                                    <a href="{{ el.get_url }}">
+                                                        {{ el.name }}
+                                                    </a>
+                                                {% endif %}
+                                                {% if num == 2 %}
+                                                    <a href="/report/{{ el.id }}">
+                                                        {{ el.name }}
+                                                    </a>
+                                                {% endif %}
+                                            </h3>
+                                            Возраст: {{ el.age }}
+                                            <br>
+                                            Пол: {{ el.get_sex_display }}
+                                            <br>
+                                            {% if user.is_authenticated and user.profile.type == 'Owner' %}
+                                                <a href="/editpet/{{ el.id }}" data-bs-toggle="tooltip"
+                                                   data-bs-placement="right"
+                                                   title data-bs-original-title="Изменить питомца"><i
+                                                        class="fas fa-edit"></i></a>
+                                                <a href="/deletepet/{{ el.id }}" data-bs-toggle="tooltip"
+                                                   data-bs-placement="right"
+                                                   title data-bs-original-title="Удалить питомца"><i
+                                                        class="fas fa-trash-alt"></i></a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
     <script>

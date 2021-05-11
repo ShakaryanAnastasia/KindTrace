@@ -9,22 +9,103 @@ from Shelter.models import Pet, Profile, Shelter, Image, Report, Order
 
 def petapp(request, num):
     user = request.user
-    if user.is_authenticated and user.profile.type == 'Owner':
-        if num == 1:
-            shelter = Shelter.objects.get(user=user.profile)
-            pets = Pet.objects.filter(shelter=shelter)
-            apps = [pet for pet in pets if pet.owner_id == None]
-            images = [Image.objects.filter(pet=app).first() for app in apps]
-        if num == 2:
-            shelter = Shelter.objects.get(user=user.profile)
-            pets = Pet.objects.filter(shelter=shelter)
-            apps = [pet for pet in pets if pet.owner_id != None]
-            images = [Image.objects.filter(pet=app).first() for app in apps]
-    else:
+    params = {}
+    apps = []
+    images = []
+    # if user.is_authenticated and user.profile.type == 'Owner':
+    #     if num == 1:
+    #         shelter = Shelter.objects.get(user=user.profile)
+    #         pets = Pet.objects.filter(shelter=shelter)
+    #         apps = [pet for pet in pets if pet.owner_id == None]
+    #         images = [Image.objects.filter(pet=app).first() for app in apps]
+    #     if num == 2:
+    #         shelter = Shelter.objects.get(user=user.profile)
+    #         pets = Pet.objects.filter(shelter=shelter)
+    #         apps = [pet for pet in pets if pet.owner_id != None]
+    #         images = [Image.objects.filter(pet=app).first() for app in apps]
+    # else:
+    sexes = Pet.SEX_CHOICES
+    types = Pet.TYPE_CHOICES
+    colors = Pet.COLOR_CHOICES
+    wools = Pet.WOOL_CHOICES
+    characters = Pet.CHARACTER_CHOICES
+
+    def reset():
+        params = {'sex': [],
+                  'petTypes': [], 'ageFrom': 0,
+                  'ageTo': max([pet.age for pet in Pet.objects.all() if pet.owner == None])}
+
         pets = Pet.objects.all()
         apps = [pet for pet in pets if pet.owner == None]
+
+        if user.is_authenticated and user.profile.type == 'Owner':
+            shelter = Shelter.objects.get(user=user.profile)
+            pets = Pet.objects.filter(shelter=shelter)
+            if num == 1:
+                apps = [pet for pet in pets if pet.owner_id == None]
+            if num == 2:
+                apps = [pet for pet in pets if pet.owner_id != None]
+
         images = [Image.objects.filter(pet=app).first() for app in apps]
-    return render(request, 'pets.html', {'apps': zip(apps, images), 'num': num})
+        return params, apps, images
+
+    if request.method == 'GET':
+        params, apps, images = reset()
+
+    elif request.method == 'POST':
+        if 'reset' in request.POST:
+            params, apps, images = reset()
+
+        if 'apply' in request.POST:
+            params = {}
+            params['type'] = request.POST.get('type')
+            if not params['type']:
+                params['type'] = [type[0] for type in types]
+
+            params['ageFrom'] = request.POST.get('ageFrom')
+            params['ageTo'] = request.POST.get('ageTo')
+
+            params['ageFrom'] = int(params['ageFrom']) if params['ageFrom'].isdigit() else 0
+            params['ageTo'] = int(params['ageTo']) \
+                if params['ageTo'].isdigit() and int(params['ageTo']) >= params['ageFrom'] else \
+                max([pet.age for pet in Pet.objects.all() if pet.owner == None])
+
+            params['sex'] = request.POST.get('sex')
+            if not params['sex']:
+                params['sex'] = [sex[0] for sex in sexes]
+            params['color'] = request.POST.get('color')
+            if not params['color']:
+                params['color'] = [color[0] for color in colors]
+            params['wool'] = request.POST.get('wool')
+            if not params['wool']:
+                params['wool'] = [wool[0] for wool in wools]
+            params['character'] = request.POST.get('character')
+            if not params['character']:
+                params['character'] = [character[0] for character in characters]
+
+            pets = Pet.objects.all()
+            apps = [pet for pet in pets if pet.owner == None]
+
+            if user.is_authenticated and user.profile.type == 'Owner':
+                shelter = Shelter.objects.get(user=user.profile)
+                pets = Pet.objects.filter(shelter=shelter)
+                if num == 1:
+                    apps = [pet for pet in pets if pet.owner_id == None]
+                if num == 2:
+                    apps = [pet for pet in pets if pet.owner_id != None]
+
+            apps = [app for app in apps if app.type in params[
+                'type'] and params['ageFrom'] <= app.age <= params['ageTo'] and app.sex in params[
+                        'sex'] and app.color in params[
+                        'color'] and app.wool in params[
+                        'wool'] and app.character in params[
+                        'character']]
+
+            images = [Image.objects.filter(pet=app).first() for app in apps]
+
+    return render(request, 'pets.html',
+                  {'apps': zip(apps, images), 'num': num, 'params': params, 'sexes': sexes, 'types': types,
+                   'colors': colors, 'wools': wools, 'characters': characters})
 
 
 def list_pet(request):
