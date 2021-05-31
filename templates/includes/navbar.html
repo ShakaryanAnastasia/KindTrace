@@ -1,86 +1,80 @@
 {% block content %}
-    <nav class="navbar navbar-expand-md ">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-
-            <a href="/" class="navbar-brand">LoGO </a>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <a class="navbar-brand" href="/"><img src='static/img/op.png' style="width: 3vw"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a href="#" class="nav-link"></a>
-                    </li>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
                     {% if not user.is_authenticated or user.profile.type == 'Owner' %}
-                        <li class="nav-item active">
-                            <a href="/pets/{{ 1 }}" class="nav-link">Питомцы</a>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/pets/{{ 1 }}">Питомцы</a>
                         </li>
                     {% endif %}
                     {% if user.is_authenticated and user.profile.type == 'Client' %}
-                        <li class="nav-item active">
-                            <a href="/pets/{{ 1 }}" class="nav-link">Выбор питомца</a>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/pets/{{ 1 }}">Выбор питомца</a>
                         </li>
                     {% endif %}
                     {% if not user.is_authenticated or user.profile.type != 'Moderator' %}
                         <li class="nav-item">
-                            <a href="/news" class="nav-link">Новости </a>
+                            <a class="nav-link active" href="/news">Новости</a>
                         </li>
                     {% endif %}
                     {% if user.is_authenticated and user.profile.type != 'Moderator' %}
                         <li class="nav-item">
-                            <a href="/tasks" class="nav-link">Задачи</a>
+                            <a class="nav-link active" href="/tasks">Задачи</a>
                         </li>
                     {% endif %}
                     {% if not user.is_authenticated %}
                         <li class="nav-item">
-
-                            <a href="/owner/application" class="nav-link">Стать хозяином приюта</a>
-
+                            <a class="nav-link active" href="/owner/application">Стать хозяином приюта</a>
                         </li>
                     {% endif %}
                     {% if user.is_authenticated and user.profile.type == 'Moderator' %}
                         <li class="nav-item">
-                            <a href="/owner/applications" class="nav-link">Заявки</a>
+                            <a class="nav-link active" href="/owner/applications">Заявки</a>
                         </li>
                     {% endif %}
                     {% if user.is_authenticated and user.profile.type == 'Owner' %}
                         <li class="nav-item">
-                            <a href="/pet/applications/{{ 1 }}" class="nav-link">Заявки</a>
-                        </li>
-                    {% endif %}
-                    {% if user.is_authenticated %}
-                        <li class="scroll ">
-                            {% if user.profile.type == 'Owner' %}
-                                <a href="/owner/editprofile" class="down">Личный кабинет</a>
-                            {% endif %}
-                            {% if user.profile.type == 'Client' %}
-                                <a href="/client/editprofile" class="down">Личный кабинет</a>
-                            {% endif %}
-                            {% if user.profile.type == 'Moderator' %}
-                                <a href="/admin/editprofile" class="down">Личный кабинет</a>
-                            {% endif %}
-                            <ul class="submenu">
-                                {% if user.profile.type == 'Client' %}
-                                    <li><a href="/pet/applications/{{ 1 }}">Мои заявки</a></li>
-                                {% endif %}
-                                {% if user.profile.type == 'Client' %}
-                                    <li><a href="/client/pets">Мои питомцы</a></li>
-                                {% endif %}
-                                <li><a href="/logout">Выйти</a></li>
-
-                            </ul>
+                            <a class="nav-link active" href="/pet/applications/{{ 1 }}">Заявки</a>
                         </li>
                     {% endif %}
                     {% if not user.is_authenticated %}
                         <li class="nav-item">
-                            <a href="/login" class="nav-link">Войти</a>
+                            <a class="nav-link active" href="/login">Войти</a>
+                        </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active dropdown-toggle" href="#"
+                               id="navbarDropdownMenuLink" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Личный кабинет
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
+                                style="background-color: #0a0909">
+                                {% if user.profile.type == 'Owner' %}
+                                    <li><a class="dropdown-item active" href="/owner/editprofile">Профиль</a></li>
+                                {% endif %}
+                                {% if user.profile.type == 'Client' %}
+                                    <li><a class="dropdown-item"
+                                           href="/client/editprofile">Профиль</a></li>
+                                    <li><a class="dropdown-item" href="/pet/applications/{{ 1 }}">Мои заявки</a></li>
+                                    <li><a class="dropdown-item" href="/client/pets">Мои питомцы</a></li>
+                                {% endif %}
+                                {% if user.profile.type == 'Moderator' %}
+                                    <li><a class="dropdown-item" href="/admin/editprofile">Профиль</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="/logout">Выйти</a></li>
+                            </ul>
                         </li>
                     {% endif %}
                 </ul>
-
             </div>
         </div>
     </nav>
-
 {% endblock %}
