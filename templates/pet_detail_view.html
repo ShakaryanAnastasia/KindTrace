@@ -32,6 +32,26 @@
                     value="{{ post.id }}">Посмотреть питомца
             </button>
         {% endif %}
+        {% if user.profile.type != 'Owner' %}
+            <hr>
+            Вам также могут понравиться:
+            <br>
+            <div class="card-group">
+                {% for img in filenames %}
+                    <div class="card" style="margin-left: 15px">
+                        <img src="/{{ img }}" class="card-img-top" alt="pet img" style="width: 15vw">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="/{{ img.pet.id }}">
+                                {{ img.pet.name }}
+                            </a></h5>
+                            Возраст: {{ img.pet.age }}
+                            <br>
+                            Пол: {{ img.pet.get_sex_display }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <hr>
         {{ post.body|linebreaks }}<br>
         {% if new_comment %}

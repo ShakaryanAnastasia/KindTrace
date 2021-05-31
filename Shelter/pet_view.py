@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
@@ -6,24 +8,67 @@ from Shelter import models
 from Shelter.forms import CommentForm, PetForm, ReportForm
 from Shelter.models import Pet, Profile, Shelter, Image, Report, Order
 
+from keras.applications import VGG19
+from keras.engine import Model
+from keras.preprocessing import image
+from keras.applications.vgg19 import preprocess_input
+
+from sklearn.neighbors import NearestNeighbors
+
+import numpy as np
+import tensorflow as tf
+import logging
+import csv
+
+FILENAME = "vecs.csv"
+
+logger = tf.get_logger()
+logger.setLevel(logging.ERROR)
+
+model = VGG19(weights='imagenet', include_top=False)
+bm = VGG19(weights='imagenet')
+model = Model(inputs=bm.input, outputs=bm.get_layer('fc1').output)
+
+knn = NearestNeighbors(metric='cosine', algorithm='brute')
+length = 4096
+
+pets = Pet.objects.filter(owner=None)
+images = [Image.objects.filter(pet=pet).first() for pet in pets]
+
+def write_in_csv(list_of_image):
+    for img in list_of_image:
+        # path = os.path.join(train_catt_dir, name_img)
+        path = img.image.path
+        img = image.load_img(path, target_size=(224, 224))  # чтение из файла
+        x = image.img_to_array(img)  # сырое изображения в вектор
+        x = np.expand_dims(x, axis=0)  # превращаем в вектор-строку (2-dims)
+        x = preprocess_input(x)  # библиотечная подготовка изображения
+        vec = model.predict(x).ravel()
+
+        with open(FILENAME, "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(vec)
+
+def load_images_vectors(count, length):
+    vecs = np.ndarray(shape=(count, length), dtype=float, order='F')
+    with open(FILENAME, "r", newline="") as file:
+        reader = csv.reader(file, delimiter=",")
+        i = 0
+        for row in reader:
+            vecs[i] = row
+            i += 1
+    return vecs
+
+#write_in_csv(images)
+vecs = load_images_vectors(len(images), length)
+knn.fit(vecs)
+vec = np.ndarray(shape=(1, length), dtype=float, order='F')
 
 def petapp(request, num):
     user = request.user
     params = {}
     apps = []
     images = []
-    # if user.is_authenticated and user.profile.type == 'Owner':
-    #     if num == 1:
-    #         shelter = Shelter.objects.get(user=user.profile)
-    #         pets = Pet.objects.filter(shelter=shelter)
-    #         apps = [pet for pet in pets if pet.owner_id == None]
-    #         images = [Image.objects.filter(pet=app).first() for app in apps]
-    #     if num == 2:
-    #         shelter = Shelter.objects.get(user=user.profile)
-    #         pets = Pet.objects.filter(shelter=shelter)
-    #         apps = [pet for pet in pets if pet.owner_id != None]
-    #         images = [Image.objects.filter(pet=app).first() for app in apps]
-    # else:
     sexes = Pet.SEX_CHOICES
     types = Pet.TYPE_CHOICES
     colors = Pet.COLOR_CHOICES
@@ -117,6 +162,16 @@ def list_pet(request):
 
 
 def post_detail(request, id):
+    pets = list(Pet.objects.filter(owner=None))
+    list_images = [Image.objects.filter(pet=pet).first() for pet in pets]
+    vec[0] = vecs[pets.index(Pet.objects.get(id=id))]
+    dist, indices = knn.kneighbors(vec, n_neighbors=3)
+    indices_tolist = indices.tolist()
+    similar_images = [
+        list_images[indices_tolist[0][i]]
+        for i in range(len(indices_tolist[0]))
+    ]
+
     post = Pet.objects.get(id=id)
     images = list(Image.objects.filter(pet=post))
     comments = post.comments.filter()
@@ -140,7 +195,8 @@ def post_detail(request, id):
                        'images': images,
                        'comments': comments,
                        'new_comment': new_comment,
-                       'comment_form': comment_form})
+                       'comment_form': comment_form,
+                       'filenames': similar_images[1:]})
 
 
 def addpet(request):
