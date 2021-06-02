@@ -32,37 +32,42 @@ model = Model(inputs=bm.input, outputs=bm.get_layer('fc1').output)
 knn = NearestNeighbors(metric='cosine', algorithm='brute')
 length = 4096
 
-pets = Pet.objects.filter(owner=None)
-images = [Image.objects.filter(pet=pet).first() for pet in pets]
+# pets = Pet.objects.filter(owner=None)
+# images = [Image.objects.filter(pet=pet).first() for pet in pets]
 
 def write_in_csv(list_of_image):
-    for img in list_of_image:
-        # path = os.path.join(train_catt_dir, name_img)
-        path = img.image.path
-        img = image.load_img(path, target_size=(224, 224))  # чтение из файла
-        x = image.img_to_array(img)  # сырое изображения в вектор
-        x = np.expand_dims(x, axis=0)  # превращаем в вектор-строку (2-dims)
-        x = preprocess_input(x)  # библиотечная подготовка изображения
-        vec = model.predict(x).ravel()
+    for imge in list_of_image:
+        if imge.pet.vector=="":
+            # path = os.path.join(train_catt_dir, name_img)
+            path = imge.image.path
+            img = image.load_img(path, target_size=(224, 224))  # чтение из файла
+            x = image.img_to_array(img)  # сырое изображения в вектор
+            x = np.expand_dims(x, axis=0)  # превращаем в вектор-строку (2-dims)
+            x = preprocess_input(x)  # библиотечная подготовка изображения
+            vec = model.predict(x).ravel()
+            imge.pet.vector = ",".join(map(str, vec.tolist()))
+            imge.pet.save()
+            # with open(FILENAME, "a", newline="") as file:
+            #     writer = csv.writer(file)
+            #     writer.writerow(vec)
 
-        with open(FILENAME, "a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(vec)
-
-def load_images_vectors(count, length):
+def load_images_vectors(count, length, list_images):
     vecs = np.ndarray(shape=(count, length), dtype=float, order='F')
-    with open(FILENAME, "r", newline="") as file:
-        reader = csv.reader(file, delimiter=",")
-        i = 0
-        for row in reader:
-            vecs[i] = row
-            i += 1
+    i = 0
+    for image in list_images:
+        vector = image.pet.vector.split(',')
+        print(image.pet.vector)
+        vecs[i] = vector
+        i+=1
+    # with open(FILENAME, "r", newline="") as file:
+    #     reader = csv.reader(file, delimiter=",")
+    #     i = 0
+    #     for row in reader:
+    #         vecs[i] = row
+    #         i += 1
     return vecs
 
-#write_in_csv(images)
-vecs = load_images_vectors(len(images), length)
-knn.fit(vecs)
-vec = np.ndarray(shape=(1, length), dtype=float, order='F')
+
 
 def petapp(request, num):
     user = request.user
@@ -164,6 +169,12 @@ def list_pet(request):
 def post_detail(request, id):
     pets = list(Pet.objects.filter(owner=None))
     list_images = [Image.objects.filter(pet=pet).first() for pet in pets]
+
+    write_in_csv(list_images)
+    vecs = load_images_vectors(len(list_images), length, list_images)
+    knn.fit(vecs)
+    vec = np.ndarray(shape=(1, length), dtype=float, order='F')
+
     vec[0] = vecs[pets.index(Pet.objects.get(id=id))]
     dist, indices = knn.kneighbors(vec, n_neighbors=3)
     indices_tolist = indices.tolist()
@@ -224,7 +235,17 @@ def addpet(request):
                     if file_path:
                         fl = Image(pet=pet, image=file_path)
                         fl.save()
-            return HttpResponseRedirect("/pets")
+            imge=Image.objects.filter(pet=pet).first()
+            if (imge):
+                path = imge.image.path
+                img = image.load_img(path, target_size=(224, 224))  # чтение из файла
+                x = image.img_to_array(img)  # сырое изображения в вектор
+                x = np.expand_dims(x, axis=0)  # превращаем в вектор-строку (2-dims)
+                x = preprocess_input(x)  # библиотечная подготовка изображения
+                vec = model.predict(x).ravel()
+                imge.pet.vector = ",".join(map(str, vec.tolist()))
+                imge.pet.save()
+            return HttpResponseRedirect("/pets/1")
         else:
             error = 'error'
     form = PetForm()
@@ -282,6 +303,16 @@ def editpet(request, id):
                     if file_path:
                         fl = Image(pet=pet, image=file_path)
                         fl.save()
+            imge = Image.objects.filter(pet=pet).first()
+            if (imge):
+                path = imge.image.path
+                img = image.load_img(path, target_size=(224, 224))  # чтение из файла
+                x = image.img_to_array(img)  # сырое изображения в вектор
+                x = np.expand_dims(x, axis=0)  # превращаем в вектор-строку (2-dims)
+                x = preprocess_input(x)  # библиотечная подготовка изображения
+                vec = model.predict(x).ravel()
+                imge.pet.vector = ",".join(map(str, vec.tolist()))
+                imge.pet.save()
             return HttpResponseRedirect("/pets/1")
         else:
             return render(request, "pet_edit.html",

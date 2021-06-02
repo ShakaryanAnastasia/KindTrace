@@ -146,7 +146,7 @@ class Pet(models.Model):
     description = models.TextField(default='', verbose_name="Описание", blank=True)
     shelter = models.ForeignKey(Shelter, verbose_name="Приют", on_delete=models.CASCADE)
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="Владелец", blank=True, null=True)
-
+    vector = models.TextField(default='', verbose_name="Вектор", blank=True)
     def __str__(self):
         return " ".join([self.name])
 

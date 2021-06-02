@@ -1,6 +1,49 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block styles %}
+    <link rel="stylesheet" href={% static 'css/main.css' %}>
+{% endblock %}
 {% block content %}
-{% include "includes/navbar.html" %}
-
+    {% include "includes/navbar.html" %}
+    <div class="inline-group main-group">
+        <div>
+            <img src='/static/img/main.png' style="width: 40vw; margin-top: 100px">
+        </div>
+        <div>
+            <label style="font-size: 3vw"> Добрый след - оставь свой след добрыми делами <i class="fas fa-paw"></i>
+            </label>
+        </div>
+    </div>
+    <br>
+    <h3>C помощью нашего сайта вы можете:</h3>
+    <div class="container">
+        <div class="inline-group">
+            <div>
+                <img src='/static/img/6.png' style="width: 5vw;">
+            </div>
+            <div>
+                <h5> Подобрать себе питомца
+                </h5>
+            </div>
+        </div>
+        <div class="inline-group">
+            <div>
+                <img src='static/img/2.png' style="width: 5vw;">
+            </div>
+            <div>
+                <h5> Помочь приютам Ульяновска
+                </h5>
+            </div>
+        </div>
+        <div class="inline-group">
+            <div>
+                <img src='/static/img/3.png' style="width: 5vw;">
+            </div>
+            <div>
+                <h5> Ознакомиться с важными новостями
+                    о жизни приютов и их обитателей
+                </h5>
+            </div>
+        </div>
+    </div>
 {% endblock %}

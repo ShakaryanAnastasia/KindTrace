@@ -4,10 +4,12 @@ import string, secrets
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.db.models import FileField
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, Http404, FileResponse, JsonResponse
 from django.shortcuts import redirect, render
 
+from KindHeart import settings
 from KindHeart.settings import BASE_DIR
 from Shelter import models
 from Shelter.forms import ApplicationOwnerForm
@@ -91,6 +93,7 @@ def read_application_owner(request, id):
 def delete(request, id, response):
     try:
         remove = OwnerApplication.objects.get(id=id)
+        send_mail('Статус заявки', response,settings.EMAIL_HOST_USER, [remove.email], fail_silently=False)
         remove.delete()
         return JsonResponse({})
 
@@ -115,6 +118,7 @@ def applay(request, id):
         profile.save()
         Shelter.objects.create(title=owner.title_shelter, address=owner.address_shelter,
                                description=owner.description_shelter, user=profile)
+        send_mail('Статус заявки', f'Ваша заявка принята. Ваш пароль для входа в систему {password}', settings.EMAIL_HOST_USER, [owner.email], fail_silently=False)
         return HttpResponseRedirect("/owner/applications")
     except OwnerApplication.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
