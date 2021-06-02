@@ -10,10 +10,12 @@ def news(request):
     user = request.user
     if user.is_authenticated and user.profile.type == 'Owner':
         shelter = Shelter.objects.get(user=user.profile)
-        apps = News.objects.filter(shelter=shelter)
+        apps = list(News.objects.filter(shelter=shelter))
+        apps.reverse()
         images = [Image.objects.filter(news=app).first() for app in apps]
     else:
-        apps = News.objects.all()
+        apps = list(News.objects.all())
+        apps.reverse()
         images = [Image.objects.filter(news=app).first() for app in apps]
     return render(request, 'news.html', {'apps': zip(apps, images)})
 

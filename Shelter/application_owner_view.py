@@ -73,7 +73,8 @@ def handle_uploaded_file(file, instance):
 
 
 def app(request):
-    apps = OwnerApplication.objects.all().reverse()
+    apps = list(OwnerApplication.objects.all())
+    apps.reverse()
     return render(request, 'owner_applications.html', {'apps': apps})
 
 

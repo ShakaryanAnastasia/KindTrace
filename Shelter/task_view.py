@@ -10,10 +10,12 @@ def tasks(request):
     user = request.user
     if user.is_authenticated and user.profile.type == 'Owner':
         shelter = Shelter.objects.get(user=user.profile)
-        apps = Task.objects.filter(shelter=shelter)
+        apps = list(Task.objects.filter(shelter=shelter))
+        apps.reverse()
         images = [Image.objects.filter(task=app).first() for app in apps]
     else:
-        apps = Task.objects.all()
+        apps = list(Task.objects.all())
+        apps.reverse()
         images = [Image.objects.filter(task=app).first() for app in apps]
     return render(request, 'tasks.html', {'apps': zip(apps, images)})
 
