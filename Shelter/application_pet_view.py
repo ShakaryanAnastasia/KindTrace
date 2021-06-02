@@ -15,10 +15,12 @@ def app(request, num):
         orders_1 = [order for order in orders if order.pet in pets]
         if num == 1:
             apps = [order for order in orders_1 if order.status == 'sent']
+            apps = apps.reverse()
         if num == 2:
             apps = [order for order in orders_1 if order.status == 'accepted']
+            apps = apps.reverse()
     if profile.type == 'Client':
-        apps = Order.objects.filter(user=profile)
+        apps = Order.objects.filter(user=profile).reverse()
     return render(request, 'pet_applications.html', {'apps': apps, 'num': num})
 
 
