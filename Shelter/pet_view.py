@@ -1,4 +1,5 @@
 import os
+from datetime import date, datetime
 
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
@@ -32,12 +33,13 @@ model = Model(inputs=bm.input, outputs=bm.get_layer('fc1').output)
 knn = NearestNeighbors(metric='cosine', algorithm='brute')
 length = 4096
 
+
 # pets = Pet.objects.filter(owner=None)
 # images = [Image.objects.filter(pet=pet).first() for pet in pets]
 
 def write_in_csv(list_of_image):
     for imge in list_of_image:
-        if imge.pet.vector=="":
+        if imge.pet.vector == "":
             # path = os.path.join(train_catt_dir, name_img)
             path = imge.image.path
             img = image.load_img(path, target_size=(224, 224))  # чтение из файла
@@ -51,6 +53,7 @@ def write_in_csv(list_of_image):
             #     writer = csv.writer(file)
             #     writer.writerow(vec)
 
+
 def load_images_vectors(count, length, list_images):
     vecs = np.ndarray(shape=(count, length), dtype=float, order='F')
     i = 0
@@ -58,7 +61,7 @@ def load_images_vectors(count, length, list_images):
         vector = image.pet.vector.split(',')
         print(image.pet.vector)
         vecs[i] = vector
-        i+=1
+        i += 1
     # with open(FILENAME, "r", newline="") as file:
     #     reader = csv.reader(file, delimiter=",")
     #     i = 0
@@ -66,7 +69,6 @@ def load_images_vectors(count, length, list_images):
     #         vecs[i] = row
     #         i += 1
     return vecs
-
 
 
 def petapp(request, num):
@@ -79,6 +81,7 @@ def petapp(request, num):
     colors = Pet.COLOR_CHOICES
     wools = Pet.WOOL_CHOICES
     characters = Pet.CHARACTER_CHOICES
+    days = []
 
     def reset():
         params = {'sex': [],
@@ -92,9 +95,9 @@ def petapp(request, num):
             shelter = Shelter.objects.get(user=user.profile)
             pets = Pet.objects.filter(shelter=shelter)
             if num == 1:
-                apps = [pet for pet in pets if pet.owner_id == None]
+                apps = [pet for pet in pets if pet.owner == None]
             if num == 2:
-                apps = [pet for pet in pets if pet.owner_id != None]
+                apps = [pet for pet in pets if pet.owner != None]
 
         images = [Image.objects.filter(pet=app).first() for app in apps]
         return params, apps, images
@@ -153,8 +156,22 @@ def petapp(request, num):
 
             images = [Image.objects.filter(pet=app).first() for app in apps]
 
+    if num == 2:
+        orders = [Order.objects.filter(pet=app).exclude(datePickUp=None).first() for app in apps]
+        reports = [Report.objects.filter(pet=app).last() for app in apps]
+        for report, order in zip(reports, orders):
+            if (order is not None):
+                    if report is not None:
+                        days.append(date.today() - report.dateCreate)
+                    else:
+                        days.append(date.today() - order.datePickUp)
+            else:
+                days.append(None)
+    else:
+        for app in apps: days.append(None)
+
     return render(request, 'pets.html',
-                  {'apps': zip(apps, images), 'num': num, 'params': params, 'sexes': sexes, 'types': types,
+                  {'apps': zip(apps, images, days), 'num': num, 'params': params, 'sexes': sexes, 'types': types,
                    'colors': colors, 'wools': wools, 'characters': characters})
 
 
@@ -235,7 +252,7 @@ def addpet(request):
                     if file_path:
                         fl = Image(pet=pet, image=file_path)
                         fl.save()
-            imge=Image.objects.filter(pet=pet).first()
+            imge = Image.objects.filter(pet=pet).first()
             if (imge):
                 path = imge.image.path
                 img = image.load_img(path, target_size=(224, 224))  # чтение из файла
@@ -344,7 +361,8 @@ def deleteimages_pet(request, id):
 def report_detail(request, id):
     post = Pet.objects.get(id=id)
     pet_images = list(Image.objects.filter(pet=post))
-    reports = Report.objects.filter(pet=post)
+    reports = list(Report.objects.filter(pet=post))
+    reports.reverse()
     images_reports = [list(Image.objects.filter(report=report)) for report in reports]
     new_report = None
     if request.method == 'POST':

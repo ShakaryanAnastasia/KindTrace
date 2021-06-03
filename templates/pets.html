@@ -123,7 +123,7 @@
                     </div>
                     <div class="col">
                         <div class="row row-cols-auto">
-                            {% for el,image in apps %}
+                            {% for el,image,day in apps %}
                                 <div class="col-auto">
                                     <div class="card h-100 w-70">
                                         {% if not image == null %}
@@ -145,6 +145,22 @@
                                             Возраст: {{ el.age }}
                                             <br>
                                             Пол: {{ el.get_sex_display }}
+                                            <br>
+                                            {% if num == 2 %}
+                                                {% if day != None %}
+                                                    {% if day.days < 360 %}
+                                                        {% if day.days < 30 %}
+                                                            <label style="color: green">Последний отчет: {{ day.days }} дней
+                                                                назад</label>
+                                                        {% else %}
+                                                            <label style="color: red">Последний отчет: {{ day.days }} дней
+                                                                назад</label>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    Питомец отдан не клиенту системы
+                                                {% endif %}
+                                            {% endif %}
                                             <br>
                                             {% if user.is_authenticated and user.profile.type == 'Owner' %}
                                                 <a href="/editpet/{{ el.id }}" data-bs-toggle="tooltip"
