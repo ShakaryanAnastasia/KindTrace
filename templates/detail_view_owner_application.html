@@ -2,6 +2,7 @@
 {% load crispy_forms_filters %}
 {% block content %}
     {% include "includes/navbar.html" %}
+    <div class="main">
         <h1>{{ application.name }} {{ application.surname }}</h1>
         Электронная почта: <p>{{ application.email }}</p>
         Номер телефона: <p>{{ application.phoneNum }}</p>
@@ -12,4 +13,5 @@
         {% for f in files %}
             <p><a href="/download/{{ f.id }}" download>{{ f.get_name }}</a></p>
         {% endfor %}
+    </div>
 {% endblock %}
