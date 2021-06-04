@@ -343,7 +343,7 @@ def deletepet(request, id):
     try:
         remove = Pet.objects.get(id=id)
         remove.delete()
-        return HttpResponseRedirect("/pets")
+        return HttpResponseRedirect("/pets/1")
     except Pet.DoesNotExist:
         return HttpResponseNotFound("<h2>News not found</h2>")
 

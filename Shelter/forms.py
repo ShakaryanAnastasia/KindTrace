@@ -95,6 +95,7 @@ class PasswordChangeForm(ModelForm):
         fields = ('password1', 'password2')
 
 
+
 class ReportForm(ModelForm):
     images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False,
                               label='Изображения')

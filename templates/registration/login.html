@@ -15,10 +15,71 @@
 
             {{ form|crispy }}
 
-            <button type="submit" class="btn">Войти</button> Забыли пароль?
+            <button type="submit" class="btn">Войти</button>
+            <br>
+            Забыли пароль?
+            <button type="button" onclick="openModal(this)" class="btn">Получить новый пароль
+            </button>
         </form>
         <hr>
         <h5>Вас еще нет в системе?</h5>
-        <a href="/signup/" class="btn" >Зарегистрироваться</a>
+        <a href="/signup/" class="btn">Зарегистрироваться</a>
     </div>
+
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="modal_message">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Новый пароль выслан на почту</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modal_data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <input id="modal_id" value="" hidden>
+                    <p>Введите почту для получения нового пароля</p>
+                    <input type="text" id="dateViewing"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="ok">Отправить</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function openModal(button) {
+            var id = button.getAttribute("value");
+
+            $('#modal_data').modal('show');
+        }
+
+        $('#ok').click(function () {
+
+            var response = $("#dateViewing").val();
+
+            console.log(response)
+            $.ajax({
+                type: 'GET',
+                url: '/new_password/' + response,
+                data: {},
+                dataType: 'json',
+                success: function () {
+                    $('#dateViewing').val(null);
+                    $('#modal_data').modal('hide');
+                    $('#modal_message').modal('show');
+                },
+                error: function (result) {
+                    alert(result);
+                }
+            });
+        });
+
+    </script>
 {% endblock %}

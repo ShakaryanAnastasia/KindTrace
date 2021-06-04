@@ -1,9 +1,13 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.views.generic import UpdateView
+
+from KindHeart import settings
+from Shelter.application_owner_view import password_generate
 from Shelter.forms import SignUpForm, PasswordChangeForm
 from Shelter.models import Profile, Shelter
 
@@ -95,23 +99,40 @@ def changepassword(request):
     if request.method == "POST" and form.is_valid():
         password1 = form.cleaned_data.get('password1')
         password2 = form.cleaned_data.get('password2')
-        if password1 == password2:
-            user = request.user
-            user.set_password(password1)
-            user.save()
-            user = authenticate(username=user.username, password=password1)
-            login(request, user)
-            if profile.type == 'Moderator':
-                return HttpResponseRedirect("/admin/editprofile")
-            if profile.type == 'Client':
-                return HttpResponseRedirect("/client/editprofile")
-            if profile.type == 'Owner':
-                return HttpResponseRedirect("/owner/editprofile")
+        if len(password1) and len(password2) >= 8:
+            if password1 == password2:
+                user = request.user
+                user.set_password(password1)
+                user.save()
+                user = authenticate(username=user.username, password=password1)
+                login(request, user)
+                if profile.type == 'Moderator':
+                    return HttpResponseRedirect("/admin/editprofile")
+                if profile.type == 'Client':
+                    return HttpResponseRedirect("/client/editprofile")
+                if profile.type == 'Owner':
+                    return HttpResponseRedirect("/owner/editprofile")
+            else:
+                error = 'Проверьте пароли на соответствие требованиям и друг другу'
         else:
-            error = 'Проверьте пароли на соответствие требованиям и друг другу'
+            error = 'Пароль должен содеражть минимум 8 символов'
     form = PasswordChangeForm()
     data = {
         'form': form,
         'error': error
     }
     return render(request, "admin_profile.html", data)
+
+
+def new_password(request, response):
+    try:
+        user = User.objects.get(username=response)
+        password = password_generate()
+        user.set_password(password)
+        user.save()
+        authenticate(username=user.username, password=password)
+        send_mail('Новый пароль', f'Ваш новый пароль для входа в систему {password}',
+                  settings.EMAIL_HOST_USER, [response], fail_silently=False)
+        return JsonResponse({})
+    except User.DoesNotExist:
+        return JsonResponse({"<h2>Нет пользователя с такой почтой</h2>"})

@@ -17,9 +17,11 @@
                             <p> {{ el.email }}</p>
                         </div>
                         <div class="column-rest">
-                            <a href="applay/{{ el.id }}" id='btk' class="btn"><i class="fas fa-check"></i></a>
+                            <a href="applay/{{ el.id }}" id='btk' class="btn" data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title data-bs-original-title="Принять заявку"><i class="fas fa-check"></i></a>
                             <br>
-                            <button type="button" onclick="openModal(this)" id='btk'
+                            <button type="button"  onclick="openModal(this)" id='btk'
                                     value="{{ el.id }}" class="fas fa-times"></button>
                         </div>
                     </div>
@@ -73,6 +75,13 @@
                     alert(result);
                 }
             });
+        });
+         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            this.addEventListener('hide.bs.tooltip', function () {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         });
     </script>
 {% endblock %}
