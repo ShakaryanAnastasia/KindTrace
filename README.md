@@ -35,4 +35,5 @@
 5) Sklearn <br />
 ### Пример работы
 ![image](https://user-images.githubusercontent.com/43274332/129693922-3878c91e-6d3a-44f3-8b9c-b30548409f47.png)
+![image](https://user-images.githubusercontent.com/43274332/129694052-9d18270e-beb4-4840-a25d-2f5e6048c3c6.png)
 
