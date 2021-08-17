@@ -34,6 +34,8 @@
 4) Keras 
 5) Sklearn <br />
 ### Пример работы
-![image](https://user-images.githubusercontent.com/43274332/129693922-3878c91e-6d3a-44f3-8b9c-b30548409f47.png)
-![image](https://user-images.githubusercontent.com/43274332/129694052-9d18270e-beb4-4840-a25d-2f5e6048c3c6.png)
+
+![image](https://user-images.githubusercontent.com/43274332/129714531-1de10781-e441-4d99-b2b4-de2146dcc0f1.png)
+![image](https://user-images.githubusercontent.com/43274332/129714496-45e778ed-b795-45ff-9aab-0a41221575f0.png)
+
 
